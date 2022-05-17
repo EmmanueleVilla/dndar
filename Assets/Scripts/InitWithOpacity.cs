@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class InitWithOpacity : MonoBehaviour
 {
     public Slider Slider;
+    public PrefsManager PrefsManager;
     public OVRPassthroughLayer OVRPassthroughLayer;
     void Start()
     {
-        Slider.value = OVRPassthroughLayer.textureOpacity;
+        Slider.value = PrefsManager.GetOpacity();
+        OVRPassthroughLayer.textureOpacity = Slider.value;
     }
 }
