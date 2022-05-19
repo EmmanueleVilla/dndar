@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static InputManager;
 using static TileManager;
 using static UnityEngine.UI.Dropdown;
 
@@ -17,12 +18,17 @@ public class MenuManager : MonoBehaviour
     public GameObject Create;
     public GameObject ReferencePlane;
 
+    public GameObject NewMap_EditTile;
+    public GameObject NewMap_InsertTile;
+    public GameObject NewMap_EditMap;
+
     public GameObject TilesRoot;
 
     public OVRPassthroughLayer OVRPassthroughLayer;
     public PrefsManager PrefsManager;
     public TMP_Dropdown TilesDropdown;
 
+    public InputManager InputManager;
 
     [Serializable]
     public class TileInfo {
@@ -70,7 +76,26 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    internal void EditMapMode() {
+        NewMap_EditMap.SetActive(true);
+        NewMap_EditTile.SetActive(false);
+        NewMap_InsertTile.SetActive(false);
+    }
+
+    internal void EditTileMode() {
+        NewMap_EditMap.SetActive(false);
+        NewMap_EditTile.SetActive(true);
+        NewMap_InsertTile.SetActive(false);
+    }
+
+    internal void InsertTileMode() {
+        NewMap_EditMap.SetActive(false);
+        NewMap_EditTile.SetActive(false);
+        NewMap_InsertTile.SetActive(true);
+    }
+
     public void GoToSettings() {
+        InputManager.GameState = GameStates.Menu;
         MainMenu.SetActive(false);
         Settings.SetActive(true);
         Create.SetActive(false);
@@ -78,6 +103,7 @@ public class MenuManager : MonoBehaviour
     }
 
     public void GoToMainMenu() {
+        InputManager.GameState = GameStates.Menu;
         MainMenu.SetActive(true);
         Settings.SetActive(false);
         Create.SetActive(false);
@@ -85,6 +111,8 @@ public class MenuManager : MonoBehaviour
     }
 
     public void GoToCreate() {
+        InputManager.GameState = GameStates.EditMap;
+        EditMapMode();
         MainMenu.SetActive(false);
         Settings.SetActive(false);
         Create.SetActive(true);

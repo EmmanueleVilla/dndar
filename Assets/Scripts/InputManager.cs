@@ -1,10 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class InputManager : MonoBehaviour
 {
+    public enum GameStates {
+        Menu,
+        NewMap,
+        EditTile,
+        InsertTile,
+        EditMap
+    }
     public Transform rayAnchor;
 
     private bool debouncing = false;
@@ -13,6 +21,11 @@ public class InputManager : MonoBehaviour
 
     private bool movingRoot = false;
     private Vector3 rigthHandStartingPos = Vector3.zero;
+
+    public GameStates GameState;
+    public MenuManager MenuManager;
+
+    public TextMeshProUGUI Log;
 
     void HandleButtonOnePressed() {
         RaycastHit hit;
@@ -27,9 +40,81 @@ public class InputManager : MonoBehaviour
         lastHit = Time.realtimeSinceStartup;
     }
 
+    bool rotatingRootClockwise = false;
+    bool rotatingRootCounterClockwise = false;
+    bool movingMap = false;
+    float delay = 1.0f;
+    float startDelay = 0.0f;
+
     void Update()
     {
-        if(Time.realtimeSinceStartup - lastHit > debounce) {
+        var buttonOne = OVRInput.Get(OVRInput.Button.One);
+        var buttonTwo = OVRInput.Get(OVRInput.Button.Two);
+
+        Log.text = "GameState? " + GameState;
+        /*
+        if (GameState == GameStates.NewMap) {
+            if(OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger, OVRInput.Controller.Touch) > 0.5f) {
+                GameState = GameStates.InsertTile;
+                MenuManager.InsertTileMode();
+            }
+        }
+        */
+
+        if(GameState == GameStates.InsertTile) {
+            if (OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger, OVRInput.Controller.Touch) < 0.1f) {
+                GameState = GameStates.NewMap;
+                MenuManager.EditTileMode();
+            }
+        }
+
+        if(GameState == GameStates.EditMap) {
+            if (buttonOne && !buttonTwo  && !rotatingRootClockwise) {
+                startDelay = Time.timeSinceLevelLoad;
+                movingMap = false;
+                rotatingRootClockwise = true;
+                rotatingRootCounterClockwise = false;
+                rigthHandStartingPos = rayAnchor.position;
+            }
+            if(buttonTwo && !buttonOne && !rotatingRootCounterClockwise) {
+                startDelay = Time.timeSinceLevelLoad;
+                movingMap = false;
+                rotatingRootClockwise = false;
+                rotatingRootCounterClockwise = true;
+                rigthHandStartingPos = rayAnchor.position;
+            }
+            if(buttonOne && buttonTwo && !movingMap) {
+                startDelay = Time.timeSinceLevelLoad;
+                movingMap = true;
+                rotatingRootClockwise = false;
+                rotatingRootCounterClockwise = false;
+            }
+
+            if(!buttonOne && !buttonTwo) {
+                movingMap = false;
+                rotatingRootClockwise = false;
+                rotatingRootCounterClockwise = false;
+                rigthHandStartingPos = rayAnchor.position;
+            }
+
+            if (rotatingRootClockwise && (Time.timeSinceLevelLoad - startDelay) > delay) {
+                var mapRoot = GameObject.FindGameObjectWithTag("MapRoot").GetComponent<MapManager>();
+                mapRoot.transform.Rotate(Vector3.up * 1.0f);
+            }
+
+            if (rotatingRootCounterClockwise && (Time.timeSinceLevelLoad - startDelay) > delay) {
+                var mapRoot = GameObject.FindGameObjectWithTag("MapRoot").GetComponent<MapManager>();
+                mapRoot.transform.Rotate(Vector3.up * -1.0f);
+            }
+
+            if (movingMap && (Time.timeSinceLevelLoad - startDelay) > delay) {
+                var delta = rayAnchor.position - rigthHandStartingPos;
+                var mapRoot = GameObject.FindGameObjectWithTag("MapRoot").GetComponent<MapManager>();
+                mapRoot.MoveWithDelta(delta);
+            }
+        }
+
+        if (Time.realtimeSinceStartup - lastHit > debounce) {
             debouncing = false;
         }
 
