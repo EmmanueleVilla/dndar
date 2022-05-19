@@ -137,6 +137,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.49998, y: 0.4999801, z: 0.09498002}
   m_Center: {x: -0.000053152442, y: 0.00028409815, z: -0.04256594}
+--- !u!114 &5985658429300911442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4946332481803882521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8582345d88e5564e959709935f69441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TileManager: {fileID: 5216732968868835238}
 --- !u!1001 &5216732968100375784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -229,3 +242,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.50004, y: 0.25024006, z: 0.52}
   m_Center: {x: -0.0054931343, y: -0.030719258, z: -0.018712465}
+--- !u!114 &2682762216951369930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4946332481415287225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8582345d88e5564e959709935f69441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TileManager: {fileID: 5216732968868835238}

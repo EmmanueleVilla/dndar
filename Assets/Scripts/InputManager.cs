@@ -20,7 +20,10 @@ public class InputManager : MonoBehaviour
             RaycastHit hit;
 
             if (Physics.Raycast(rayAnchor.position, rayAnchor.forward, out hit)) {
-                hit.transform.Rotate(Vector3.forward * 90);
+                var collider = hit.transform.gameObject.GetComponent<TileCollider>();
+                if (collider != null) {
+                    collider.Rotate();
+                }
             }
             debouncing = true;
             lastHit = Time.realtimeSinceStartup;
