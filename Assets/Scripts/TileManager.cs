@@ -4,15 +4,27 @@ using UnityEngine;
 
 public class TileManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+
+    public enum TileTypes {
+        Sewer_Floor,
+        Sewer_Wall,
+        Sewer_PipedWall,
+        Sewer_Sluice_Straight,
+        Sewer_Sluice_Curve,
+        Sewer_Sluice_End,
+        Sewer_Sluice_Cross,
+        Sewer_Angle_Convex,
+        Sewer_Angle_Concave,
+        Sewer_Ladder,
+        RoughStone_Arc,
+        RoughStone_Angle_Concave,
+        RoughStone_Angle_Convex,
+        RoughStone_Door,
+        RoughStone_Floor,
+        RoughStone_Stairs_High,
+        RoughStone_Stairs_Low,
+        RoughStone_Wall
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public TileTypes TileType;
 }
