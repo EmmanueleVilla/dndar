@@ -23,7 +23,8 @@ public class TileManager : MonoBehaviour
         RoughStone_Floor,
         RoughStone_Stairs_High,
         RoughStone_Stairs_Low,
-        RoughStone_Wall
+        RoughStone_Wall,
+        None
     }
 
     public TileTypes TileType;

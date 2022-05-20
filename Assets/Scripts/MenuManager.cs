@@ -18,10 +18,6 @@ public class MenuManager : MonoBehaviour
     public GameObject Create;
     public GameObject ReferencePlane;
 
-    public GameObject NewMap_EditTile;
-    public GameObject NewMap_InsertTile;
-    public GameObject NewMap_EditMap;
-
     public GameObject TilesRoot;
 
     public OVRPassthroughLayer OVRPassthroughLayer;
@@ -65,9 +61,15 @@ public class MenuManager : MonoBehaviour
         }
         foreach (var tile in selectedTiles.Tiles) {
             var go = Instantiate(tile.Prefab);
+            var colliders = go.GetComponentsInChildren<TileCollider>();
+            foreach(var collider in colliders) {
+                collider.gameObject.AddComponent<SelectionTile>();
+                collider.enabled = false;
+            }
             go.transform.parent = TilesRoot.transform;
             go.transform.localPosition = new Vector3(x, y, -15);
             go.transform.localScale = new Vector3(250, 250, 250);
+            go.transform.localEulerAngles = new Vector3(0, 0, 0);
             x += 20;
             if(x > endX) {
                 x = startX;
@@ -75,27 +77,7 @@ public class MenuManager : MonoBehaviour
             }
         }
     }
-
-    internal void EditMapMode() {
-        NewMap_EditMap.SetActive(true);
-        NewMap_EditTile.SetActive(false);
-        NewMap_InsertTile.SetActive(false);
-    }
-
-    internal void EditTileMode() {
-        NewMap_EditMap.SetActive(false);
-        NewMap_EditTile.SetActive(true);
-        NewMap_InsertTile.SetActive(false);
-    }
-
-    internal void InsertTileMode() {
-        NewMap_EditMap.SetActive(false);
-        NewMap_EditTile.SetActive(false);
-        NewMap_InsertTile.SetActive(true);
-    }
-
     public void GoToSettings() {
-        InputManager.GameState = GameStates.Menu;
         MainMenu.SetActive(false);
         Settings.SetActive(true);
         Create.SetActive(false);
@@ -103,7 +85,6 @@ public class MenuManager : MonoBehaviour
     }
 
     public void GoToMainMenu() {
-        InputManager.GameState = GameStates.Menu;
         MainMenu.SetActive(true);
         Settings.SetActive(false);
         Create.SetActive(false);
@@ -111,8 +92,6 @@ public class MenuManager : MonoBehaviour
     }
 
     public void GoToCreate() {
-        InputManager.GameState = GameStates.EditMap;
-        EditMapMode();
         MainMenu.SetActive(false);
         Settings.SetActive(false);
         Create.SetActive(true);

@@ -2,19 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.XR.Oculus;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.XR;
 using static TileManager;
 
 public class InputManager : MonoBehaviour
 {
-    public enum GameStates {
-        Menu,
-        NewMap,
-        EditTile,
-        InsertTile,
-        EditMap
-    }
     public Transform rayAnchor;
 
     public TileTypes SelectedTile;
@@ -26,23 +21,9 @@ public class InputManager : MonoBehaviour
     private bool movingRoot = false;
     private Vector3 rigthHandStartingPos = Vector3.zero;
 
-    public GameStates GameState;
     public MenuManager MenuManager;
 
     public TextMeshProUGUI Log;
-
-    void HandleButtonOnePressed() {
-        RaycastHit hit;
-
-        if (Physics.Raycast(rayAnchor.position, rayAnchor.forward, out hit)) {
-            var collider = hit.transform.gameObject.GetComponent<TileCollider>();
-            if (collider != null) {
-                collider.Rotate();
-            }
-        }
-        debouncing = true;
-        lastHit = Time.realtimeSinceStartup;
-    }
 
     bool rotatingRootClockwise = false;
     bool rotatingRootCounterClockwise = false;
@@ -51,28 +32,80 @@ public class InputManager : MonoBehaviour
     float startDelay = 0.0f;
     GameObject selectedTilePrefab;
 
-    bool prevOne = false;
-    bool prevTwo = false;
+    private InputDevice GetInputDevice() {
+        InputDeviceCharacteristics characteristics = InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.Right;
+        List<InputDevice> devices = new List<InputDevice>();
+        InputDevices.GetDevicesWithCharacteristics(characteristics, devices);
+        return devices.First();
+    }
 
     void Update()
     {
+        var inputDevice = GetInputDevice();
         var buttonOne = OVRInput.Get(OVRInput.Button.One);
         var buttonTwo = OVRInput.Get(OVRInput.Button.Two);
+        var indexTrigger = OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger, OVRInput.Controller.Touch);
+        var handTrigger = OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger, OVRInput.Controller.Touch);
 
-        if (GameState == GameStates.EditMap) {
-            if(OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger, OVRInput.Controller.Touch) > 0.5f) {
-                GameState = GameStates.InsertTile;
-                MenuManager.InsertTileMode();
-            }
+        bool indexTouching;
+        bool thumbTouching;
+
+        inputDevice.TryGetFeatureValue(OculusUsages.indexTouch, out indexTouching);
+        inputDevice.TryGetFeatureValue(OculusUsages.thumbTouch, out thumbTouching);
+
+        if (Time.realtimeSinceStartup - lastHit > debounce) {
+            debouncing = false;
         }
 
-        if(GameState == GameStates.InsertTile) {
+        if(!indexTouching && !thumbTouching) {
+            Destroy(selectedTilePrefab);
+            SelectedTile = TileTypes.None;
+        }
+
+        if(debouncing) {
+            return;
+        }
+
+        RaycastHit hit;
+        var collides = Physics.Raycast(rayAnchor.position, rayAnchor.forward, out hit);
+        if(!collides) {
+            return;
+        }
+        var collidingPoint = hit.point;
+        var collidingObject = hit.transform.gameObject;
+        var selectionTile = collidingObject.GetComponent<SelectionTile>();
+        if(selectionTile != null) {
+            if (buttonOne) {
+                SelectedTile = selectionTile.GetComponent<TileCollider>().TileManager.GetComponent<TileManager>().TileType;
+                Destroy(selectedTilePrefab);
+                var group = MenuManager.Tiles.FirstOrDefault(x => x.Tiles.Select(tile => tile.TileType).Contains(SelectedTile));
+                if (group == null) {
+                    return;
+                }
+                var prefab = group.Tiles.FirstOrDefault(x => x.TileType == SelectedTile).Prefab;
+                selectedTilePrefab = Instantiate(prefab);
+                selectedTilePrefab.transform.parent = GameObject.FindGameObjectWithTag("MapRoot").transform;
+                selectedTilePrefab.transform.localScale = Vector3.zero;
+                lastHit = Time.realtimeSinceStartup;
+                return;
+            }
+            if(buttonTwo && !debouncing) {
+                selectionTile.GetComponent<TileCollider>().TileManager.transform.Rotate(Vector3.up * 90);
+                lastHit = Time.realtimeSinceStartup;
+                return;
+            }
+        }
+        var referencePlane = collidingObject.GetComponent<ReferencePlaneCollider>();
+        var tileInMap = collidingObject.GetComponent<TileCollider>();
+
+        /*
+        if (GameState == GameStates.InsertTile) {
             if (OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger, OVRInput.Controller.Touch) < 0.1f) {
                 Destroy(selectedTilePrefab);
                 GameState = GameStates.NewMap;
                 MenuManager.EditTileMode();
             }
-            RaycastHit hit;
+            
             if (buttonOne) {
                 if (Physics.Raycast(rayAnchor.position, rayAnchor.forward, out hit)) {
                     var collider = hit.transform.gameObject.GetComponent<TileCollider>();
@@ -168,10 +201,9 @@ public class InputManager : MonoBehaviour
             rigthHandStartingPos = rayAnchor.position;
         }
 
-        if (Time.realtimeSinceStartup - lastHit > debounce) {
-            debouncing = false;
-        }
+        
         prevOne = buttonOne;
         prevTwo = buttonTwo;
+        */
     }
 }
