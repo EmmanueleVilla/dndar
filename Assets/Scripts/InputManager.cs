@@ -47,9 +47,12 @@ public class InputManager : MonoBehaviour
     bool rotatingRootClockwise = false;
     bool rotatingRootCounterClockwise = false;
     bool movingMap = false;
-    float delay = 1.0f;
+    float delay = 0.5f;
     float startDelay = 0.0f;
     GameObject selectedTilePrefab;
+
+    bool prevOne = false;
+    bool prevTwo = false;
 
     void Update()
     {
@@ -97,6 +100,7 @@ public class InputManager : MonoBehaviour
                 var collider = hit.transform.gameObject.GetComponent<ReferencePlaneCollider>();
                 if (collider != null) {
                     Vector3 point = hit.point;
+                    selectedTilePrefab.transform.localEulerAngles = new Vector3(-90, 0, 0);
                     selectedTilePrefab.transform.position = new Vector3(Mathf.Round(point.x * 20) / 20, Mathf.Round(point.y * 20) / 20, Mathf.Round(point.z * 20) / 20);
                 }
             }
@@ -167,32 +171,7 @@ public class InputManager : MonoBehaviour
         if (Time.realtimeSinceStartup - lastHit > debounce) {
             debouncing = false;
         }
-        /*
-        var primaryHandTrigger = OVRInput.Get(OVRInput.Button.Two);
-
-        if(!primaryHandTrigger && movingRoot) {
-            var mapRoot = GameObject.FindGameObjectWithTag("MapRoot").GetComponent<MapManager>();
-            mapRoot.UpdatePosition(mapRoot.transform.position);
-            movingRoot = false;
-        }
-
-        if (OVRInput.Get(OVRInput.Button.One) && !debouncing) {
-            HandleButtonOnePressed();
-        } else if (primaryHandTrigger) {
-            RaycastHit hit;
-            if (movingRoot) {
-                var delta = rayAnchor.position - rigthHandStartingPos;
-                var mapRoot = GameObject.FindGameObjectWithTag("MapRoot").GetComponent<MapManager>();
-                mapRoot.MoveWithDelta(delta);
-            }
-            else if(Physics.Raycast(rayAnchor.position, rayAnchor.forward, out hit)) {
-                var collider = hit.transform.gameObject.GetComponent<TileCollider>();
-                if (collider != null && !movingRoot && primaryHandTrigger) {
-                    movingRoot = true;
-                    rigthHandStartingPos = rayAnchor.position;
-                }
-            }
-        }
-        */
+        prevOne = buttonOne;
+        prevTwo = buttonTwo;
     }
 }
