@@ -22,6 +22,8 @@ public class InputManager : MonoBehaviour
     private Vector3 rigthHandStartingPos = Vector3.zero;
 
     public MenuManager MenuManager;
+    public MapManager MapManager;
+    public GameObject RightHandRoot;
 
     public TextMeshProUGUI Log;
 
@@ -45,6 +47,13 @@ public class InputManager : MonoBehaviour
         var buttonOne = OVRInput.Get(OVRInput.Button.One);
         var buttonTwo = OVRInput.Get(OVRInput.Button.Two);
         var indexTrigger = OVRInput.Get(OVRInput.Axis1D.SecondaryIndexTrigger, OVRInput.Controller.Touch);
+
+        if(indexTrigger < 0.1f)
+        {
+            MapManager.transform.parent = null;
+            MapManager.isFixingZXRotation = false;
+        }
+
         var handTrigger = OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger, OVRInput.Controller.Touch);
 
         bool indexTouching;
@@ -96,6 +105,19 @@ public class InputManager : MonoBehaviour
             }
         }
         var referencePlane = collidingObject.GetComponent<ReferencePlaneCollider>();
+
+        if(referencePlane != null)
+        {
+            if(SelectedTile == TileTypes.None)
+            {
+                if(indexTrigger > 0.1f)
+                {
+                    MapManager.fixedRotation = MapManager.transform.eulerAngles;
+                    MapManager.isFixingZXRotation = true;
+                    MapManager.transform.parent = RightHandRoot.transform;
+                }
+            }
+        }
         var tileInMap = collidingObject.GetComponent<TileCollider>();
 
         /*

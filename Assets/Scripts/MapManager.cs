@@ -4,19 +4,14 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    private Vector3 position;
+    public Vector3 fixedRotation;
+    public bool isFixingZXRotation;
 
-    void Start()
+    private void Update()
     {
-        position = this.transform.position;
+        if(isFixingZXRotation)
+        {
+            this.transform.eulerAngles = new Vector3(fixedRotation.x, this.transform.eulerAngles.y, fixedRotation.z);
+        }
     }
-
-    public void UpdatePosition(Vector3 newPos) {
-        position = newPos;
-    }
-
-    public void MoveWithDelta(Vector3 delta) {
-        this.transform.position = position + delta;
-    }
-
 }
