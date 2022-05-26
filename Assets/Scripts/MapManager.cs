@@ -4,8 +4,42 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
-    public Vector3 fixedRotation;
-    public bool isFixingZXRotation;
+    public GameObject RightHandRoot;
+    public ReferencePlaneCollider[] ReferencePlanes;
+
+    Vector3 fixedRotation;
+    bool isFixingZXRotation;
+
+    public void EnterMovementMode()
+    {
+        ExitReferenceMode();
+        fixedRotation = transform.eulerAngles;
+        transform.parent = RightHandRoot.transform;
+        isFixingZXRotation = true;
+    }
+
+    public void EnterReferenceMode()
+    {
+        ExitMovementMode();
+        foreach(var collider in ReferencePlanes)
+        {
+            collider.EnterReferenceMode();
+        }
+    }
+
+    public void ExitReferenceMode()
+    {
+        foreach (var collider in ReferencePlanes)
+        {
+            collider.ExitReferenceMode();
+        }
+    }
+
+    public void ExitMovementMode()
+    {
+        transform.parent = null;
+        isFixingZXRotation = false;
+    }
 
     private void Update()
     {

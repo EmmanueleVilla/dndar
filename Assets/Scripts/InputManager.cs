@@ -16,22 +16,13 @@ public class InputManager : MonoBehaviour
 
     private bool debouncing = false;
     private float lastHit = 0;
-    private float debounce = 0.5f;
-
-    private bool movingRoot = false;
-    private Vector3 rigthHandStartingPos = Vector3.zero;
+    private float debounce = 0.25f;
 
     public MenuManager MenuManager;
     public MapManager MapManager;
-    public GameObject RightHandRoot;
 
     public TextMeshProUGUI Log;
 
-    bool rotatingRootClockwise = false;
-    bool rotatingRootCounterClockwise = false;
-    bool movingMap = false;
-    float delay = 0.5f;
-    float startDelay = 0.0f;
     GameObject selectedTilePrefab;
 
     private InputDevice GetInputDevice() {
@@ -39,6 +30,12 @@ public class InputManager : MonoBehaviour
         List<InputDevice> devices = new List<InputDevice>();
         InputDevices.GetDevicesWithCharacteristics(characteristics, devices);
         return devices.First();
+    }
+
+    private void StartDebounce()
+    {
+        debouncing = true;
+        lastHit = Time.realtimeSinceStartup;
     }
 
     void Update()
@@ -50,11 +47,15 @@ public class InputManager : MonoBehaviour
 
         if(indexTrigger < 0.1f)
         {
-            MapManager.transform.parent = null;
-            MapManager.isFixingZXRotation = false;
+            MapManager.ExitMovementMode();
         }
 
         var handTrigger = OVRInput.Get(OVRInput.Axis1D.SecondaryHandTrigger, OVRInput.Controller.Touch);
+
+        if(handTrigger < 0.1f)
+        {
+            MapManager.ExitReferenceMode();
+        }
 
         bool indexTouching;
         bool thumbTouching;
@@ -93,14 +94,22 @@ public class InputManager : MonoBehaviour
                 }
                 var prefab = group.Tiles.FirstOrDefault(x => x.TileType == SelectedTile).Prefab;
                 selectedTilePrefab = Instantiate(prefab);
-                selectedTilePrefab.transform.parent = GameObject.FindGameObjectWithTag("MapRoot").transform;
+                selectedTilePrefab.transform.parent = MapManager.transform;
+                selectedTilePrefab.transform.localEulerAngles = new Vector3(0, 0, 0);
                 selectedTilePrefab.transform.localScale = Vector3.zero;
-                lastHit = Time.realtimeSinceStartup;
+                var colliders = selectedTilePrefab.GetComponentsInChildren<BoxCollider>();
+                foreach(var collider in colliders)
+                {
+                    collider.enabled = false;
+                }
+                
+                StartDebounce();
+                Log.text = SelectedTile.ToString(); 
                 return;
             }
             if(buttonTwo && !debouncing) {
                 selectionTile.GetComponent<TileCollider>().TileManager.transform.Rotate(Vector3.up * 90);
-                lastHit = Time.realtimeSinceStartup;
+                StartDebounce();
                 return;
             }
         }
@@ -112,9 +121,28 @@ public class InputManager : MonoBehaviour
             {
                 if(indexTrigger > 0.1f)
                 {
-                    MapManager.fixedRotation = MapManager.transform.eulerAngles;
-                    MapManager.isFixingZXRotation = true;
-                    MapManager.transform.parent = RightHandRoot.transform;
+                    MapManager.EnterMovementMode();
+                } else if(handTrigger > 0.1f)
+                {
+                    MapManager.EnterReferenceMode();
+                }
+            } else if(selectedTilePrefab != null) {
+                Vector3 point = hit.point;
+                selectedTilePrefab.transform.localScale = Vector3.one;
+                selectedTilePrefab.transform.position = point;
+                selectedTilePrefab.transform.localPosition = new Vector3(Mathf.Round(selectedTilePrefab.transform.localPosition.x * 20) / 20, selectedTilePrefab.transform.localPosition.y, Mathf.Round(selectedTilePrefab.transform.localPosition.z * 20) / 20);
+                if(buttonTwo && !debouncing)
+                {
+                    selectedTilePrefab.transform.Rotate(Vector3.up * 90);
+                    StartDebounce();
+                    return;
+                }
+                if(buttonOne && !debouncing)
+                {
+                    var go = Instantiate(selectedTilePrefab);
+                    go.transform.parent = MapManager.transform;
+                    go.transform.position = selectedTilePrefab.transform.position;
+                    go.transform.eulerAngles = selectedTilePrefab.transform.eulerAngles;
                 }
             }
         }

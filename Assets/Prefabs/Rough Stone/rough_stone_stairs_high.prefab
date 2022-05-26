@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3179687688897888705}
   m_Father: {fileID: 0}
@@ -66,7 +67,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fc7f1440ec8f43545a50c72a581be58f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.10000001
+      value: 0.11
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fc7f1440ec8f43545a50c72a581be58f, type: 3}
       propertyPath: m_LocalPosition.x
@@ -74,7 +75,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fc7f1440ec8f43545a50c72a581be58f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0118
+      value: 0.0132
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: fc7f1440ec8f43545a50c72a581be58f, type: 3}
       propertyPath: m_LocalPosition.z
@@ -119,24 +120,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fc7f1440ec8f43545a50c72a581be58f, type: 3}
   m_PrefabInstance: {fileID: 3146393699660621354}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &3179687688897888705 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fc7f1440ec8f43545a50c72a581be58f, type: 3}
-  m_PrefabInstance: {fileID: 3146393699660621354}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &3146393699660621350
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2840458237201963899}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8582345d88e5564e959709935f69441, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TileManager: {fileID: 3146393699208262964}
 --- !u!65 &3146393699660621351
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -150,3 +133,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.51378, y: 0.5144801, z: 0.44452015}
   m_Center: {x: 0.0019397438, y: -0.03235326, z: 0.022065153}
+--- !u!114 &3146393699660621350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2840458237201963899}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8582345d88e5564e959709935f69441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TileManager: {fileID: 3146393699208262964}
+--- !u!4 &3179687688897888705 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fc7f1440ec8f43545a50c72a581be58f, type: 3}
+  m_PrefabInstance: {fileID: 3146393699660621354}
+  m_PrefabAsset: {fileID: 0}
