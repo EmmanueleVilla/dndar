@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 16
+  Snap: 20
 --- !u!1001 &4541454943481593099
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -24,8 +24,16 @@ public class TileManager : MonoBehaviour
         RoughStone_Stairs_High,
         RoughStone_Stairs_Low,
         RoughStone_Wall,
-        None
+        None,
+        Objects_Coffin,
+        Objects_Column,
+        Objects_Crate,
+        Objects_Crates,
+        Objects_Plates,
+        Objects_Statue
     }
 
     public TileTypes TileType;
+
+    public int Snap;
 }

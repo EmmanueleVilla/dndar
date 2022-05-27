@@ -1640,11 +1640,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9809c5e8418bb047bf2c8ba1d1a2cec, type: 3}
---- !u!4 &633987595 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 400002, guid: 126d619cf4daa52469682f85c1378b4a, type: 3}
-  m_PrefabInstance: {fileID: 230564028}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &641120318
 GameObject:
   m_ObjectHideFlags: 0
@@ -4609,8 +4604,8 @@ RectTransform:
   - {fileID: 1250732401}
   - {fileID: 1964654981}
   - {fileID: 516356240}
-  m_Father: {fileID: 633987595}
-  m_RootOrder: 0
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4680,6 +4675,20 @@ MonoBehaviour:
       Prefab: {fileID: 4541454945023917039, guid: d54f07ebcd7617d4cb7b27908eeaddec, type: 3}
     - TileType: 17
       Prefab: {fileID: 97782636838894510, guid: 6956b2b4c2b6f8a429b8e1e6c84380bc, type: 3}
+  - Label: Objects
+    Tiles:
+    - TileType: 19
+      Prefab: {fileID: 8573916564852593975, guid: bcd76d24cb10948e1ba5458960a38f8b, type: 3}
+    - TileType: 20
+      Prefab: {fileID: 2159810307152181849, guid: 214c84624d3a247a8bac6ce5899a84e6, type: 3}
+    - TileType: 21
+      Prefab: {fileID: 7663017345031163458, guid: 90961609b903747e8800737acc02da35, type: 3}
+    - TileType: 22
+      Prefab: {fileID: 5245801756085864233, guid: 62865363be40b4b4cbd05e2ecaedc83e, type: 3}
+    - TileType: 23
+      Prefab: {fileID: 2569987426900961261, guid: 207dc1b9f7be54f83a0b5fac6341010a, type: 3}
+    - TileType: 24
+      Prefab: {fileID: 4523827446277197985, guid: 45e9d79b6351346fb9d9eb95946331f9, type: 3}
 --- !u!114 &1922019918
 MonoBehaviour:
   m_ObjectHideFlags: 0

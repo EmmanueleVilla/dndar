@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6889693624129981381}
   - {fileID: 7067949611073076209}
@@ -47,6 +48,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 2
+  Snap: 20
 --- !u!1001 &6347721026859166766
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -125,11 +127,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 07584a78a064b1e40a339a448bc6ef0c, type: 3}
   m_PrefabInstance: {fileID: 6347721026859166766}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &6889693624129981381 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07584a78a064b1e40a339a448bc6ef0c, type: 3}
-  m_PrefabInstance: {fileID: 6347721026859166766}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &3588308800945070657
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -156,6 +153,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileManager: {fileID: 1073922389504694323}
+--- !u!4 &6889693624129981381 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07584a78a064b1e40a339a448bc6ef0c, type: 3}
+  m_PrefabInstance: {fileID: 6347721026859166766}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6414282143518083634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -230,11 +232,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 473c3ae70b6c49143a0b3981885800e0, type: 3}
   m_PrefabInstance: {fileID: 6414282143518083634}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &6813562358262902233 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 473c3ae70b6c49143a0b3981885800e0, type: 3}
-  m_PrefabInstance: {fileID: 6414282143518083634}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &5812402095825232134
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -261,6 +258,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileManager: {fileID: 1073922389504694323}
+--- !u!4 &6813562358262902233 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 473c3ae70b6c49143a0b3981885800e0, type: 3}
+  m_PrefabInstance: {fileID: 6414282143518083634}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7321973128125717530
 PrefabInstance:
   m_ObjectHideFlags: 0

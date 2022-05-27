@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5759883488175442595}
   - {fileID: 5759883487516314371}
@@ -46,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 1
+  Snap: 20
 --- !u!1001 &5216732967416147272
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -120,11 +122,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 56e295f29347000418d317107a4bad27, type: 3}
   m_PrefabInstance: {fileID: 5216732967416147272}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5759883488175442595 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 56e295f29347000418d317107a4bad27, type: 3}
-  m_PrefabInstance: {fileID: 5216732967416147272}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &7438339197864669935
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -151,6 +148,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileManager: {fileID: 5216732968868835238}
+--- !u!4 &5759883488175442595 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 56e295f29347000418d317107a4bad27, type: 3}
+  m_PrefabInstance: {fileID: 5216732967416147272}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5216732968100375784
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -225,11 +227,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 05bff2f2cd2444e4193e3d92fae48c10, type: 3}
   m_PrefabInstance: {fileID: 5216732968100375784}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &5759883487516314371 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 05bff2f2cd2444e4193e3d92fae48c10, type: 3}
-  m_PrefabInstance: {fileID: 5216732968100375784}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &5878737607656438319
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -256,3 +253,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileManager: {fileID: 5216732968868835238}
+--- !u!4 &5759883487516314371 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 05bff2f2cd2444e4193e3d92fae48c10, type: 3}
+  m_PrefabInstance: {fileID: 5216732968100375784}
+  m_PrefabAsset: {fileID: 0}

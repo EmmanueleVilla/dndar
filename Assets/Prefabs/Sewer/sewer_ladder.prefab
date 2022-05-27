@@ -26,6 +26,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 927664258166027920}
   - {fileID: 927664258850125616}
@@ -59,6 +60,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7527722650343403678}
   - {fileID: 816559763610719124}
@@ -78,6 +80,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 9
+  Snap: 20
 --- !u!1001 &816559762222813403
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -107,7 +110,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05bff2f2cd2444e4193e3d92fae48c10, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0177
+      value: 0.0194
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05bff2f2cd2444e4193e3d92fae48c10, type: 3}
       propertyPath: m_LocalPosition.z
@@ -152,11 +155,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 05bff2f2cd2444e4193e3d92fae48c10, type: 3}
   m_PrefabInstance: {fileID: 816559762222813403}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &927664258850125616 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 05bff2f2cd2444e4193e3d92fae48c10, type: 3}
-  m_PrefabInstance: {fileID: 816559762222813403}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &1343751147924309532
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -183,6 +181,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileManager: {fileID: 4185758504511996582}
+--- !u!4 &927664258850125616 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 05bff2f2cd2444e4193e3d92fae48c10, type: 3}
+  m_PrefabInstance: {fileID: 816559762222813403}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &816559762881810811
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -257,11 +260,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 56e295f29347000418d317107a4bad27, type: 3}
   m_PrefabInstance: {fileID: 816559762881810811}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &927664258166027920 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 56e295f29347000418d317107a4bad27, type: 3}
-  m_PrefabInstance: {fileID: 816559762881810811}
-  m_PrefabAsset: {fileID: 0}
 --- !u!65 &2597103839547772636
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -288,6 +286,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileManager: {fileID: 4185758504511996582}
+--- !u!4 &927664258166027920 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 56e295f29347000418d317107a4bad27, type: 3}
+  m_PrefabInstance: {fileID: 816559762881810811}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8069727743272294261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -317,11 +320,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0776630c800d59a43ab856e88e8188d3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.01
+      value: -0.0091
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0776630c800d59a43ab856e88e8188d3, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0105
+      value: 0.007
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 0776630c800d59a43ab856e88e8188d3, type: 3}
       propertyPath: m_LocalRotation.w
@@ -362,11 +365,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0776630c800d59a43ab856e88e8188d3, type: 3}
   m_PrefabInstance: {fileID: 8069727743272294261}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &7527722650343403678 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0776630c800d59a43ab856e88e8188d3, type: 3}
-  m_PrefabInstance: {fileID: 8069727743272294261}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1841606795028333390
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,3 +378,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileManager: {fileID: 4185758504511996582}
+--- !u!4 &7527722650343403678 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0776630c800d59a43ab856e88e8188d3, type: 3}
+  m_PrefabInstance: {fileID: 8069727743272294261}
+  m_PrefabAsset: {fileID: 0}
