@@ -97,6 +97,7 @@ public class MenuManager : MonoBehaviour
         Settings.SetActive(false);
         Create.SetActive(true);
         ReferencePlane.SetActive(true);
+        InputManager.Load();
     }
 
     public void SetOpacity(float value) {

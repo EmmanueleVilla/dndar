@@ -41,26 +41,28 @@ public class InputManager : MonoBehaviour
         lastHit = Time.realtimeSinceStartup;
     }
 
-    void Start()
+    public void Load()
     {
         var cache = PlayerPrefs.GetString("saved_map", "");
         var objects = cache.Split("\n");
         Log.text = "Loaded " + cache;
         foreach(var tile in objects) {
-            var values = tile.Split("#");
-            var type = (TileTypes)(Enum.Parse(typeof(TileTypes), values[0]));
-            var pos = new Vector3(float.Parse(values[1]), float.Parse(values[2]), float.Parse(values[3]));
-            var rot = new Vector3(float.Parse(values[4]), float.Parse(values[5]), float.Parse(values[6]));
-            var group = MenuManager.Tiles.FirstOrDefault(x => x.Tiles.Select(tile => tile.TileType).Contains(type));
-            if (group == null) {
-                continue;
-            }
-            var prefab = group.Tiles.FirstOrDefault(x => x.TileType == type).Prefab;
-            var go = Instantiate(prefab);
-            go.transform.parent = MapManager.transform;
-            go.transform.localPosition = pos;
-            go.transform.localEulerAngles = rot;
-            Utils.SetLayerRecursively(go, LayerMask.NameToLayer("Map"));
+            try {
+                var values = tile.Split("#");
+                var type = (TileTypes)(Enum.Parse(typeof(TileTypes), values[0]));
+                var pos = new Vector3(float.Parse(values[1]), float.Parse(values[2]), float.Parse(values[3]));
+                var rot = new Vector3(float.Parse(values[4]), float.Parse(values[5]), float.Parse(values[6]));
+                var group = MenuManager.Tiles.FirstOrDefault(x => x.Tiles.Select(tile => tile.TileType).Contains(type));
+                if (group == null) {
+                    continue;
+                }
+                var prefab = group.Tiles.FirstOrDefault(x => x.TileType == type).Prefab;
+                var go = Instantiate(prefab);
+                go.transform.parent = MapManager.transform;
+                go.transform.localPosition = pos;
+                go.transform.localEulerAngles = rot;
+                Utils.SetLayerRecursively(go, LayerMask.NameToLayer("Map"));
+            } catch(Exception e) {}
         }
     }
 
@@ -99,7 +101,7 @@ public class InputManager : MonoBehaviour
             SelectedTile = TileTypes.None;
         }
 
-        if (indexTrigger > 0.9f && handTrigger > 0.9f && gripTouching)
+        if (SelectedTile == TileTypes.None && indexTrigger > 0.9f && handTrigger > 0.9f && gripTouching)
         {
             Save();
         }
