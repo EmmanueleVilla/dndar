@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.XR;
 using static TileManager;
+using System;
+using System.Text;
 
 public class InputManager : MonoBehaviour
 {
@@ -39,6 +41,29 @@ public class InputManager : MonoBehaviour
         lastHit = Time.realtimeSinceStartup;
     }
 
+    void Start()
+    {
+        var cache = PlayerPrefs.GetString("saved_map", "");
+        var objects = cache.Split("\n");
+        Log.text = "Loaded " + cache;
+        foreach(var tile in objects) {
+            var values = tile.Split("#");
+            var type = (TileTypes)(Enum.Parse(typeof(TileTypes), values[0]));
+            var pos = new Vector3(float.Parse(values[1]), float.Parse(values[2]), float.Parse(values[3]));
+            var rot = new Vector3(float.Parse(values[4]), float.Parse(values[5]), float.Parse(values[6]));
+            var group = MenuManager.Tiles.FirstOrDefault(x => x.Tiles.Select(tile => tile.TileType).Contains(type));
+            if (group == null) {
+                continue;
+            }
+            var prefab = group.Tiles.FirstOrDefault(x => x.TileType == type).Prefab;
+            var go = Instantiate(prefab);
+            go.transform.parent = MapManager.transform;
+            go.transform.localPosition = pos;
+            go.transform.localEulerAngles = rot;
+            Utils.SetLayerRecursively(go, LayerMask.NameToLayer("Map"));
+        }
+    }
+
     void Update()
     {
         var inputDevice = GetInputDevice();
@@ -57,8 +82,6 @@ public class InputManager : MonoBehaviour
         {
             MapManager.ExitReferenceMode();
         }
-
-
 
         inputDevice.TryGetFeatureValue(OculusUsages.indexTouch, out bool indexTouching);
         inputDevice.TryGetFeatureValue(OculusUsages.thumbTouch, out bool thumbTouching);
@@ -79,7 +102,6 @@ public class InputManager : MonoBehaviour
         if (indexTrigger > 0.9f && handTrigger > 0.9f && gripTouching)
         {
             Save();
-            Log.text = "SAVED";
         }
 
         if (debouncing)
@@ -91,24 +113,24 @@ public class InputManager : MonoBehaviour
         var mask = LayerMask.GetMask("Default", "Map", "Tiles");
         if(SelectedTile != TileTypes.None) {
             mask = LayerMask.GetMask("Default", "Tiles");
-            Log.text = "Mask: ignore map\n";
+            //Log.text = "Mask: ignore map\n";
         } else {
-            Log.text = "Mask: map\n";
+            //Log.text = "Mask: map\n";
         }
         
         var collides = Physics.Raycast(rayAnchor.position, rayAnchor.forward, out hit, 50.0f, mask);
         if (!collides)
         {
-            Log.text += "no hit";
+            //Log.text += "no hit";
             return;
         }
         var collidingPoint = hit.point;
         var collidingObject = hit.transform.gameObject;
-        Log.text += "Layer " + collidingObject.layer;
+        //Log.text += "Layer " + collidingObject.layer;
         foreach(var component in collidingObject.GetComponents<Component>()) {
             var name = component.ToString().ToLower();
             if(name.Contains("tile") || name.Contains("collider")) {
-                Log.text += component + ",";
+                //Log.text += component + ",";
             }
         }
         var selectionTile = collidingObject.GetComponent<SelectionTile>();
@@ -116,6 +138,7 @@ public class InputManager : MonoBehaviour
         {
             if (buttonOne)
             {
+                StartDebounce();
                 SelectedTile = selectionTile.GetComponent<TileCollider>().TileManager.GetComponent<TileManager>().TileType;
                 Destroy(selectedTilePrefab);
                 var group = MenuManager.Tiles.FirstOrDefault(x => x.Tiles.Select(tile => tile.TileType).Contains(SelectedTile));
@@ -134,14 +157,13 @@ public class InputManager : MonoBehaviour
                     collider.enabled = false;
                 }
 
-                StartDebounce();
                 Log.text = SelectedTile.ToString();
                 return;
             }
             if (buttonTwo && !debouncing)
             {
-                selectionTile.GetComponent<TileCollider>().TileManager.transform.Rotate(Vector3.up * 90);
                 StartDebounce();
+                selectionTile.GetComponent<TileCollider>().TileManager.transform.Rotate(Vector3.up * 90);
                 return;
             }
         }
@@ -170,12 +192,13 @@ public class InputManager : MonoBehaviour
                 selectedTilePrefab.transform.localPosition = new Vector3(Mathf.Round(selectedTilePrefab.transform.localPosition.x * snap) / snap, hit.transform.localPosition.y + 0.01f, Mathf.Round(selectedTilePrefab.transform.localPosition.z * snap) / snap);
                 if (buttonTwo && !debouncing)
                 {
-                    selectedTilePrefab.transform.Rotate(Vector3.up * 90);
                     StartDebounce();
+                    selectedTilePrefab.transform.Rotate(Vector3.up * 90);
                     return;
                 }
                 if (buttonOne && !debouncing)
                 {
+                    StartDebounce();
                     var group = MenuManager.Tiles.FirstOrDefault(x => x.Tiles.Select(tile => tile.TileType).Contains(SelectedTile));
                     if (group == null)
                     {
@@ -193,8 +216,13 @@ public class InputManager : MonoBehaviour
         var tileInMap = collidingObject.GetComponent<TileCollider>();
         if(tileInMap != null) {
             if(SelectedTile == TileTypes.None) {
-                if(buttonOne) {
+                if(buttonOne && !debouncing) {
+                    StartDebounce();
                     Destroy(tileInMap.GetComponent<TileCollider>().TileManager.gameObject);
+                }
+                if(buttonTwo && !debouncing) {
+                    StartDebounce();
+                    tileInMap.GetComponent<TileCollider>().TileManager.gameObject.transform.Rotate(Vector3.up * 90);
                 }
             }
         }
@@ -202,14 +230,27 @@ public class InputManager : MonoBehaviour
 
     void Save()
     {
-        var list = MapManager.GetComponentsInChildren<TileManager>().Select(x => new SavedTile() { Type = x.TileType, LocalPosition = x.transform.localPosition, LocalEulerAngles = x.transform.localEulerAngles });
-        PlayerPrefs.SetString("saved_map", JsonUtility.ToJson(list));
-    }
-
-    public class SavedTile
-    {
-        public TileTypes Type;
-        public Vector3 LocalPosition;
-        public Vector3 LocalEulerAngles;
+        var children = MapManager.GetComponentsInChildren<TileManager>();
+        var saveFile = new StringBuilder();
+        Log.text = "";
+        foreach(var tile in children ){
+            saveFile.Append(
+            tile.TileType
+            + "#" +
+            tile.transform.localPosition.x
+            + "#" +
+            tile.transform.localPosition.y
+            + "#" +
+            tile.transform.localPosition.z
+            + "#" +
+            tile.transform.localEulerAngles.x
+            + "#" +
+            tile.transform.localEulerAngles.y
+            + "#" +
+            tile.transform.localEulerAngles.z
+            + "\n");
+        }
+        Log.text += saveFile.ToString();
+        PlayerPrefs.SetString("saved_map", saveFile.ToString());
     }
 }
