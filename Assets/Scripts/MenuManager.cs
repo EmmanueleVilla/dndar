@@ -70,6 +70,7 @@ public class MenuManager : MonoBehaviour
             go.transform.localPosition = new Vector3(x, y, -15);
             go.transform.localScale = new Vector3(250, 250, 250);
             go.transform.localEulerAngles = new Vector3(0, 0, 0);
+            Utils.SetLayerRecursively(go, LayerMask.NameToLayer("Tiles"));
             x += 20;
             if(x > endX) {
                 x = startX;
