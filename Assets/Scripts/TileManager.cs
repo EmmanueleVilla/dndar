@@ -30,7 +30,11 @@ public class TileManager : MonoBehaviour
         Objects_Crate,
         Objects_Crates,
         Objects_Plates,
-        Objects_Statue
+        Objects_Statue,
+        Character_Monk,
+        Character_Ranger,
+        Character_Wizard,
+        Character_Fighter
     }
 
     public TileTypes TileType;

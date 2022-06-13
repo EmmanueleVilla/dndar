@@ -57,19 +57,26 @@ public class InputManager : MonoBehaviour
             MapManager.ExitReferenceMode();
         }
 
-        bool indexTouching;
-        bool thumbTouching;
 
-        inputDevice.TryGetFeatureValue(OculusUsages.indexTouch, out indexTouching);
-        inputDevice.TryGetFeatureValue(OculusUsages.thumbTouch, out thumbTouching);
+
+        inputDevice.TryGetFeatureValue(OculusUsages.indexTouch, out bool indexTouching);
+        inputDevice.TryGetFeatureValue(OculusUsages.thumbTouch, out bool thumbTouching);
+        inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool gripTouching);
 
         if (Time.realtimeSinceStartup - lastHit > debounce) {
             debouncing = false;
         }
 
-        if(!indexTouching && !thumbTouching) {
+
+        if (!indexTouching && !thumbTouching && !gripTouching) {
             Destroy(selectedTilePrefab);
             SelectedTile = TileTypes.None;
+        }
+
+        if(indexTrigger > 0.9f && handTrigger > 0.9f && gripTouching)
+        {
+            Save();
+            Log.text = "SAVED";
         }
 
         if(debouncing) {
@@ -151,5 +158,19 @@ public class InputManager : MonoBehaviour
         var tileInMap = collidingObject.GetComponent<TileCollider>();
 
         //TODO: edit already placed tile
+    }
+
+
+    void Save()
+    {
+        var list = MapManager.GetComponentsInChildren<TileManager>().Select(x => new SavedTile() { Type = x.TileType, LocalPosition = x.transform.localPosition, LocalEulerAngles = x.transform.localEulerAngles });
+        PlayerPrefs.SetString("saved_map", JsonUtility.ToJson(list));
+    }
+
+    public class SavedTile
+    {
+        public TileTypes Type;
+        public Vector3 LocalPosition;
+        public Vector3 LocalEulerAngles;
     }
 }

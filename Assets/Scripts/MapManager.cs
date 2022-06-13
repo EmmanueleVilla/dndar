@@ -48,4 +48,5 @@ public class MapManager : MonoBehaviour
             this.transform.eulerAngles = new Vector3(fixedRotation.x, this.transform.eulerAngles.y, fixedRotation.z);
         }
     }
+
 }

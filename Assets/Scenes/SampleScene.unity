@@ -2179,7 +2179,7 @@ GameObject:
   - component: {fileID: 783767336}
   m_Layer: 0
   m_Name: RefPlane
-  m_TagString: Untagged
+  m_TagString: RefPlane
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4689,6 +4689,16 @@ MonoBehaviour:
       Prefab: {fileID: 2569987426900961261, guid: 207dc1b9f7be54f83a0b5fac6341010a, type: 3}
     - TileType: 24
       Prefab: {fileID: 4523827446277197985, guid: 45e9d79b6351346fb9d9eb95946331f9, type: 3}
+  - Label: Characters
+    Tiles:
+    - TileType: 25
+      Prefab: {fileID: 4431728284588738199, guid: 2e943e730f9b6412582beb338081bfe0, type: 3}
+    - TileType: 26
+      Prefab: {fileID: 1109428551391542888, guid: 68fde7695f5bc49d49d2d93ccb2fa4b4, type: 3}
+    - TileType: 27
+      Prefab: {fileID: 4320014943360069164, guid: 9ffc240cb991741d8aecd766b27cb919, type: 3}
+    - TileType: 28
+      Prefab: {fileID: 4030861579158434212, guid: 8f5ba2c98b9cb445da3a6eaf374f69c0, type: 3}
 --- !u!114 &1922019918
 MonoBehaviour:
   m_ObjectHideFlags: 0
