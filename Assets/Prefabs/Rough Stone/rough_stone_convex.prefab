@@ -47,6 +47,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileType: 12
   Snap: 20
+  DeltaY: 
 --- !u!1001 &4393296998635642284
 PrefabInstance:
   m_ObjectHideFlags: 0

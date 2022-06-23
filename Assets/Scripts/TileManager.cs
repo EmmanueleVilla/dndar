@@ -40,4 +40,6 @@ public class TileManager : MonoBehaviour
     public TileTypes TileType;
 
     public int Snap;
+
+    public float[] DeltaY;
 }

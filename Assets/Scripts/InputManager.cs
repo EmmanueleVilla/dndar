@@ -9,6 +9,8 @@ using UnityEngine.XR;
 using static TileManager;
 using System;
 using System.Text;
+using Logic.Core.Map.Impl;
+using DndCore.Map;
 
 public class InputManager : MonoBehaviour
 {
@@ -46,14 +48,17 @@ public class InputManager : MonoBehaviour
         var cache = PlayerPrefs.GetString("saved_map", "");
         var objects = cache.Split("\n");
         Log.text = "Loaded " + cache;
-        foreach(var tile in objects) {
-            try {
+        foreach (var tile in objects)
+        {
+            try
+            {
                 var values = tile.Split("#");
                 var type = (TileTypes)(Enum.Parse(typeof(TileTypes), values[0]));
                 var pos = new Vector3(float.Parse(values[1]), float.Parse(values[2]), float.Parse(values[3]));
                 var rot = new Vector3(float.Parse(values[4]), float.Parse(values[5]), float.Parse(values[6]));
                 var group = MenuManager.Tiles.FirstOrDefault(x => x.Tiles.Select(tile => tile.TileType).Contains(type));
-                if (group == null) {
+                if (group == null)
+                {
                     continue;
                 }
                 var prefab = group.Tiles.FirstOrDefault(x => x.TileType == type).Prefab;
@@ -62,7 +67,8 @@ public class InputManager : MonoBehaviour
                 go.transform.localPosition = pos;
                 go.transform.localEulerAngles = rot;
                 Utils.SetLayerRecursively(go, LayerMask.NameToLayer("Map"));
-            } catch(Exception e) {}
+            }
+            catch (Exception e) { }
         }
     }
 
@@ -113,13 +119,16 @@ public class InputManager : MonoBehaviour
 
         RaycastHit hit;
         var mask = LayerMask.GetMask("Default", "Map", "Tiles");
-        if(SelectedTile != TileTypes.None) {
+        if (SelectedTile != TileTypes.None)
+        {
             mask = LayerMask.GetMask("Default", "Tiles");
             //Log.text = "Mask: ignore map\n";
-        } else {
+        }
+        else
+        {
             //Log.text = "Mask: map\n";
         }
-        
+
         var collides = Physics.Raycast(rayAnchor.position, rayAnchor.forward, out hit, 50.0f, mask);
         if (!collides)
         {
@@ -129,9 +138,11 @@ public class InputManager : MonoBehaviour
         var collidingPoint = hit.point;
         var collidingObject = hit.transform.gameObject;
         //Log.text += "Layer " + collidingObject.layer;
-        foreach(var component in collidingObject.GetComponents<Component>()) {
+        foreach (var component in collidingObject.GetComponents<Component>())
+        {
             var name = component.ToString().ToLower();
-            if(name.Contains("tile") || name.Contains("collider")) {
+            if (name.Contains("tile") || name.Contains("collider"))
+            {
                 //Log.text += component + ",";
             }
         }
@@ -216,13 +227,17 @@ public class InputManager : MonoBehaviour
             }
         }
         var tileInMap = collidingObject.GetComponent<TileCollider>();
-        if(tileInMap != null) {
-            if(SelectedTile == TileTypes.None) {
-                if(buttonOne && !debouncing) {
+        if (tileInMap != null)
+        {
+            if (SelectedTile == TileTypes.None)
+            {
+                if (buttonOne && !debouncing)
+                {
                     StartDebounce();
                     Destroy(tileInMap.GetComponent<TileCollider>().TileManager.gameObject);
                 }
-                if(buttonTwo && !debouncing) {
+                if (buttonTwo && !debouncing)
+                {
                     StartDebounce();
                     tileInMap.GetComponent<TileCollider>().TileManager.gameObject.transform.Rotate(Vector3.up * 90);
                 }
@@ -234,11 +249,15 @@ public class InputManager : MonoBehaviour
     {
         var children = MapManager.GetComponentsInChildren<TileManager>();
         var saveFile = new StringBuilder();
+        ArrayDndMap map = new ArrayDndMap(42, 42, new CellInfo(' ', 0));
         Log.text = "";
-        foreach(var tile in children ){
+        var minY = 0f;
+
+        foreach (var tile in children)
+        {
             saveFile.Append(
             tile.TileType
-            + "#" +
+            + "#:" +
             tile.transform.localPosition.x
             + "#" +
             tile.transform.localPosition.y
@@ -251,7 +270,66 @@ public class InputManager : MonoBehaviour
             + "#" +
             tile.transform.localEulerAngles.z
             + "\n");
+            minY = MathF.Min(minY, tile.transform.localPosition.y);
         }
+        Log.text += "minY: " + minY + "\n";
+
+        foreach (var tile in children)
+        {
+            var quantization = tile.GetComponent<TileQuantization>();
+            if (quantization != null)
+            {
+                var cells = quantization.ToMap();
+                //Log.text += "Localposition x: " + tile.transform.localPosition.x + "\n";
+                //Log.text += "Localposition y: " + tile.transform.localPosition.y + "\n";
+                Log.text += "Localposition y: " + tile.transform.localPosition.y + "\n";
+                int shiftedX = -1 * ((int)(tile.transform.localPosition.x * 100) - 50);
+                int shiftedZ = -1 * ((int)(tile.transform.localPosition.z * 100) - 50);
+                int shiftedY = (int)(Math.Round((tile.transform.localPosition.y - minY) * 100 / 5.0) * 5);
+                //Log.text += "shiftedX: " + shiftedX + "\n";
+                //Log.text += "shiftedZ: " + shiftedZ + "\n";
+                Log.text += "shiftedY: " + shiftedY + "\n";
+                int x = (int)(shiftedX / 2.5);
+                int z = (int)(shiftedZ / 2.5);
+                byte y = (byte)(shiftedY);
+                Log.text += "Cell position y: " + y + "\n";
+                //Log.text += "Cell position x: " + x + "\n";
+                //Log.text += "Cell position z: " + z + "\n";
+                for (int i = 0; i < cells.Count; i++)
+                {
+                    int xx = cells[i].X + x;
+                    int zz = cells[i].Y + z;
+                    map.SetCell(xx, zz, new CellInfo(
+                        cells[i].Terrain,
+                        y,
+                        null,
+                        xx,
+                        zz
+                    ));
+                }
+            }
+        }
+
+        Log.text += "<mspace=0.75em>Begin map\n";
+        for (int j = 0; j < 42; j++)
+        {
+            Log.text += j + " ";
+            for (int i = 0; i < 42; i++)
+            {
+                String c = map.GetCellInfo(i, j).Terrain + "";
+                if (c == " ")
+                {
+                    c = "--";
+                }
+                else
+                {
+                    c += map.GetCellInfo(i, j).Height;
+                }
+                Log.text += c;
+            }
+            Log.text += "\n";
+        }
+
         Log.text += saveFile.ToString();
         PlayerPrefs.SetString("saved_map", saveFile.ToString());
     }

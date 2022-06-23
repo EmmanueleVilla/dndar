@@ -25,7 +25,7 @@ public class ReferencePlaneCollider : MonoBehaviour
 
     private void Update()
     {
-        if(referenceMode)
+        if (referenceMode)
         {
             var delta = RightHandRoot.transform.position.y - handStartPosition.y;
             delta = Mathf.Round(delta * 20) / 20;
