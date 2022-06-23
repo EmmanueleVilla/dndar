@@ -52,6 +52,7 @@ public class InputManager : MonoBehaviour
         {
             try
             {
+                Log.text += "parsing " + tile + "\n";
                 var values = tile.Split("#");
                 var type = (TileTypes)(Enum.Parse(typeof(TileTypes), values[0]));
                 var pos = new Vector3(float.Parse(values[1]), float.Parse(values[2]), float.Parse(values[3]));
@@ -68,7 +69,10 @@ public class InputManager : MonoBehaviour
                 go.transform.localEulerAngles = rot;
                 Utils.SetLayerRecursively(go, LayerMask.NameToLayer("Map"));
             }
-            catch (Exception e) { }
+            catch (Exception e)
+            {
+                Log.text += e.ToString();
+            }
         }
     }
 
@@ -255,9 +259,10 @@ public class InputManager : MonoBehaviour
 
         foreach (var tile in children)
         {
+            Log.text += "appending tile " + tile + "\n";
             saveFile.Append(
             tile.TileType
-            + "#:" +
+            + "#" +
             tile.transform.localPosition.x
             + "#" +
             tile.transform.localPosition.y
@@ -299,9 +304,10 @@ public class InputManager : MonoBehaviour
                 {
                     int xx = cells[i].X + x;
                     int zz = cells[i].Y + z;
+                    byte yy = (byte)((int)cells[i].Height + (int)y);
                     map.SetCell(xx, zz, new CellInfo(
                         cells[i].Terrain,
-                        y,
+                        yy,
                         null,
                         xx,
                         zz
@@ -311,19 +317,19 @@ public class InputManager : MonoBehaviour
         }
 
         Log.text += "<mspace=0.75em>Begin map\n";
-        for (int j = 0; j < 42; j++)
+        for (int j = 41; j >= 0; j--)
         {
-            Log.text += j + " ";
+            Log.text += j.ToString("D2");
             for (int i = 0; i < 42; i++)
             {
                 String c = map.GetCellInfo(i, j).Terrain + "";
                 if (c == " ")
                 {
-                    c = "--";
+                    c = "---";
                 }
                 else
                 {
-                    c += map.GetCellInfo(i, j).Height;
+                    c += map.GetCellInfo(i, j).Height.ToString("D2");
                 }
                 Log.text += c;
             }

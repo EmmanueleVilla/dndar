@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7022274702058460649}
   - component: {fileID: 7022274702058460648}
+  - component: {fileID: -8622651883930624900}
   m_Layer: 0
   m_Name: rough_stone_arc
   m_TagString: Untagged
@@ -47,7 +48,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileType: 10
   Snap: 20
-  DeltaY: 
+  DeltaY: []
+--- !u!114 &-8622651883930624900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7022274702058460650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0c2e4cdf7d4049298fc560b6f2d6ca0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7022274701643822173
 PrefabInstance:
   m_ObjectHideFlags: 0

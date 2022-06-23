@@ -5,7 +5,8 @@ using UnityEngine;
 public class TileManager : MonoBehaviour
 {
 
-    public enum TileTypes {
+    public enum TileTypes
+    {
         Sewer_Floor,
         Sewer_Wall,
         Sewer_PipedWall,
@@ -40,6 +41,4 @@ public class TileManager : MonoBehaviour
     public TileTypes TileType;
 
     public int Snap;
-
-    public float[] DeltaY;
 }

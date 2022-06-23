@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4541454945023917036}
   - component: {fileID: 4541454945023917037}
+  - component: {fileID: -7257709776522798191}
   m_Layer: 0
   m_Name: rough_stone_stairs_low
   m_TagString: Untagged
@@ -52,6 +53,18 @@ MonoBehaviour:
   - 0.0055
   - 0.0155
   - 0.0155
+--- !u!114 &-7257709776522798191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4541454945023917039}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c470ae4df4610431b98fcb011fe58604, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4541454943481593099
 PrefabInstance:
   m_ObjectHideFlags: 0
