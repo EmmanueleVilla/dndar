@@ -153,6 +153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4845966209756738560}
   - component: {fileID: 5875412799132699745}
+  - component: {fileID: 669453571115136366}
   m_Layer: 0
   m_Name: sewer_angle_concave
   m_TagString: Untagged
@@ -191,7 +192,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileType: 8
   Snap: 20
-  DeltaY: []
+--- !u!114 &669453571115136366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5400969430540965270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1326f1b4dae9455f8997930a61b8639, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &25392539132876506
 PrefabInstance:
   m_ObjectHideFlags: 0
