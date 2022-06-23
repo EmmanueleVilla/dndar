@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6333432514640103620}
   - component: {fileID: 3010572531458768774}
+  - component: {fileID: -273835142276517003}
   m_Layer: 0
   m_Name: sewer_piped_wall
   m_TagString: Untagged
@@ -49,6 +50,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileType: 2
   Snap: 20
+--- !u!114 &-273835142276517003
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1073922389504694323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a22eed79c84ac4cd29006371911c890b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6347721026859166766
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -43,6 +43,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1045992870866109118}
   - component: {fileID: 8004906516499460091}
+  - component: {fileID: 1637068987844791085}
   m_Layer: 0
   m_Name: sewer_ladder
   m_TagString: Untagged
@@ -81,7 +82,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileType: 9
   Snap: 20
-  DeltaY: []
+--- !u!114 &1637068987844791085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4185758504511996582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b42bc34771d7465e8bfd0e1f5934862, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &816559762222813403
 PrefabInstance:
   m_ObjectHideFlags: 0

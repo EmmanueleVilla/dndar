@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4275603161476850908}
   - component: {fileID: 1017594492266034002}
+  - component: {fileID: 739946928810475908}
   m_Layer: 0
   m_Name: sewer_sluice_end
   m_TagString: Untagged
@@ -47,6 +48,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TileType: 5
   Snap: 20
+--- !u!114 &739946928810475908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7372020203679556560}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2387a1f08e2d44ca7b2c42f8b4d02ee5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7177248499905910380
 PrefabInstance:
   m_ObjectHideFlags: 0
