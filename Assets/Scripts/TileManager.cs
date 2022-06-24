@@ -35,7 +35,10 @@ public class TileManager : MonoBehaviour
         Character_Monk,
         Character_Ranger,
         Character_Wizard,
-        Character_Fighter
+        Character_Fighter,
+        Monster_Kobold_Rogue,
+        Monster_Kobold_Wizard,
+        Monster_Kobold_Monk
     }
 
     public TileTypes TileType;
