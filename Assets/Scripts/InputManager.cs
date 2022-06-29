@@ -266,7 +266,6 @@ public class InputManager : MonoBehaviour
 
         foreach (var tile in children)
         {
-            Log.text += "appending tile " + tile + "\n";
             saveFile.Append(
             tile.TileType
             + "#" +
@@ -284,7 +283,6 @@ public class InputManager : MonoBehaviour
             + "\n");
             minY = MathF.Min(minY, tile.transform.localPosition.y);
         }
-        Log.text += "minY: " + minY + "\n";
 
         foreach (var tile in children)
         {
