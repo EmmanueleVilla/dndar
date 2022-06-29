@@ -6,6 +6,7 @@ TagManager:
   tags:
   - MapRoot
   - RefPlane
+  - ForbiddenTile
   layers:
   - Default
   - TransparentFX
