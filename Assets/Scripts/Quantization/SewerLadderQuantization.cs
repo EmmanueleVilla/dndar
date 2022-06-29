@@ -13,28 +13,28 @@ public class SewerLadderQuantization : TileQuantization
         {
             cells.Add(new CellInfo('G', 0, null, 0, 0));
             cells.Add(new CellInfo('G', 0, null, 1, 0));
-            cells.Add(new CellInfo('X', 0, null, 0, 1));
-            cells.Add(new CellInfo('X', 0, null, 1, 1));
+            cells.Add(new CellInfo('X', 4, null, 0, 1));
+            cells.Add(new CellInfo('X', 4, null, 1, 1));
         }
         if (rotation == 90)
         {
             cells.Add(new CellInfo('G', 0, null, 0, 0));
-            cells.Add(new CellInfo('X', 0, null, 1, 0));
+            cells.Add(new CellInfo('X', 4, null, 1, 0));
             cells.Add(new CellInfo('G', 0, null, 0, 1));
-            cells.Add(new CellInfo('X', 0, null, 1, 1));
+            cells.Add(new CellInfo('X', 4, null, 1, 1));
         }
         if (rotation == 180)
         {
-            cells.Add(new CellInfo('X', 0, null, 0, 0));
-            cells.Add(new CellInfo('X', 0, null, 1, 0));
+            cells.Add(new CellInfo('X', 4, null, 0, 0));
+            cells.Add(new CellInfo('X', 4, null, 1, 0));
             cells.Add(new CellInfo('G', 0, null, 0, 1));
             cells.Add(new CellInfo('G', 0, null, 1, 1));
         }
         if (rotation == 270)
         {
-            cells.Add(new CellInfo('X', 0, null, 0, 0));
+            cells.Add(new CellInfo('X', 4, null, 0, 0));
             cells.Add(new CellInfo('G', 0, null, 1, 0));
-            cells.Add(new CellInfo('X', 0, null, 0, 1));
+            cells.Add(new CellInfo('X', 4, null, 0, 1));
             cells.Add(new CellInfo('G', 0, null, 1, 1));
         }
         return cells;
