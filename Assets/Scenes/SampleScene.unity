@@ -4434,7 +4434,7 @@ MonoBehaviour:
     - TileType: 29
       Prefab: {fileID: 2307408369806747999, guid: 1a2e4c1d5875e4c0aac7dfc7cb6c38ff, type: 3}
     - TileType: 30
-      Prefab: {fileID: 1109428551391542888, guid: 68fde7695f5bc49d49d2d93ccb2fa4b4, type: 3}
+      Prefab: {fileID: 4013711957506701021, guid: 4f2beecd7f315477a9796fb58db45a11, type: 3}
 --- !u!114 &1922019918
 MonoBehaviour:
   m_ObjectHideFlags: 0
