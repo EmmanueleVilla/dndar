@@ -4356,6 +4356,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Log: {fileID: 516356241}
   MainMenu: {fileID: 129763068}
+  MapManager: {fileID: 465368470}
   Settings: {fileID: 1250732400}
   Create: {fileID: 1964654980}
   ReferencePlane: {fileID: 1685705844}

@@ -59,7 +59,6 @@ public class InputManager : MonoBehaviour
         {
             try
             {
-                Log.text += "parsing " + tile + "\n";
                 var values = tile.Split("#");
                 var type = (TileTypes)(Enum.Parse(typeof(TileTypes), values[0]));
                 var pos = new Vector3(float.Parse(values[1]), float.Parse(values[2]), float.Parse(values[3]));
@@ -78,7 +77,7 @@ public class InputManager : MonoBehaviour
             }
             catch (Exception e)
             {
-                Log.text += e.ToString();
+                //Log.text += e.ToString();
             }
         }
     }

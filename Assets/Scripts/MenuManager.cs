@@ -14,6 +14,7 @@ public class MenuManager : MonoBehaviour
     public TextMeshProUGUI Log;
 
     public GameObject MainMenu;
+    public MapManager MapManager;
     public GameObject Settings;
     public GameObject Create;
     public GameObject ReferencePlane;
@@ -27,20 +28,23 @@ public class MenuManager : MonoBehaviour
     public InputManager InputManager;
 
     [Serializable]
-    public class TileInfo {
+    public class TileInfo
+    {
         public TileTypes TileType;
         public GameObject Prefab;
     }
 
     [Serializable]
-    public class TileGroup {
+    public class TileGroup
+    {
         public string Label;
         public TileInfo[] Tiles;
     }
 
     public List<TileGroup> Tiles;
 
-    public void Start() {
+    public void Start()
+    {
         GoToMainMenu();
         TilesDropdown.options = Tiles.Select(tile => new TMP_Dropdown.OptionData(tile.Label)).ToList();
         TilesDropdown.value = 0;
@@ -49,20 +53,24 @@ public class MenuManager : MonoBehaviour
         OnTileSetSelected();
     }
 
-    public void OnTileSetSelected() {
+    public void OnTileSetSelected()
+    {
         var selectedTiles = Tiles[TilesDropdown.value];
         int startX = -65;
         int endX = 65;
         int startY = 6;
         int x = startX;
         int y = startY;
-        foreach (Transform child in TilesRoot.transform) {
+        foreach (Transform child in TilesRoot.transform)
+        {
             GameObject.Destroy(child.gameObject);
         }
-        foreach (var tile in selectedTiles.Tiles) {
+        foreach (var tile in selectedTiles.Tiles)
+        {
             var go = Instantiate(tile.Prefab);
             var colliders = go.GetComponentsInChildren<TileCollider>();
-            foreach(var collider in colliders) {
+            foreach (var collider in colliders)
+            {
                 collider.gameObject.AddComponent<SelectionTile>();
                 collider.enabled = false;
             }
@@ -72,27 +80,46 @@ public class MenuManager : MonoBehaviour
             go.transform.localEulerAngles = new Vector3(0, 0, 0);
             Utils.SetLayerRecursively(go, LayerMask.NameToLayer("Tiles"));
             x += 20;
-            if(x > endX) {
+            if (x > endX)
+            {
                 x = startX;
                 y -= 20;
             }
         }
     }
-    public void GoToSettings() {
+    public void GoToSettings()
+    {
+        ResetMap();
         MainMenu.SetActive(false);
         Settings.SetActive(true);
         Create.SetActive(false);
         ReferencePlane.SetActive(false);
     }
 
-    public void GoToMainMenu() {
+    private void ResetMap()
+    {
+        var children = MapManager.GetComponentsInChildren<TileManager>();
+        foreach (var tile in children)
+        {
+            if (tile.gameObject.tag != "RefPlane")
+            {
+                Destroy(tile.gameObject);
+            }
+        }
+    }
+
+    public void GoToMainMenu()
+    {
+        ResetMap();
         MainMenu.SetActive(true);
         Settings.SetActive(false);
         Create.SetActive(false);
         ReferencePlane.SetActive(false);
     }
 
-    public void GoToCreate() {
+    public void GoToCreate()
+    {
+        ResetMap();
         MainMenu.SetActive(false);
         Settings.SetActive(false);
         Create.SetActive(true);
@@ -100,12 +127,14 @@ public class MenuManager : MonoBehaviour
         InputManager.Load();
     }
 
-    public void SetOpacity(float value) {
+    public void SetOpacity(float value)
+    {
         OVRPassthroughLayer.textureOpacity = value;
         PrefsManager.SetOpacity(value);
     }
 
-    public void SetEdgeRendering(bool value) {
+    public void SetEdgeRendering(bool value)
+    {
         OVRPassthroughLayer.edgeRenderingEnabled = value;
         PrefsManager.SetEdgesRendering(value);
     }
