@@ -6,7 +6,9 @@ TagManager:
   tags:
   - MapRoot
   - RefPlane
+  - SelectableTile
   - ForbiddenTile
+  - Log
   layers:
   - Default
   - TransparentFX
@@ -16,7 +18,7 @@ TagManager:
   - UI
   - Map
   - Tiles
-  - 
+  - Plane
   - 
   - 
   - 

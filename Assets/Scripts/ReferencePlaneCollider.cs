@@ -7,7 +7,13 @@ public class ReferencePlaneCollider : MonoBehaviour
     public GameObject RightHandRoot;
 
     Vector3 fixedPosition;
+    Vector3 startPosition;
     Vector3 handStartPosition;
+
+    void Start()
+    {
+        startPosition = transform.localPosition;
+    }
 
     bool referenceMode;
 
@@ -21,6 +27,11 @@ public class ReferencePlaneCollider : MonoBehaviour
     public void ExitReferenceMode()
     {
         referenceMode = false;
+    }
+
+    public void Reset()
+    {
+        this.transform.localPosition = startPosition;
     }
 
     private void Update()

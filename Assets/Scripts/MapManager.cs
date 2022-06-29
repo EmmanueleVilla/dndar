@@ -10,6 +10,14 @@ public class MapManager : MonoBehaviour
     Vector3 fixedRotation;
     bool isFixingZXRotation;
 
+    public void ResetRefPlane()
+    {
+        foreach (var collider in ReferencePlanes)
+        {
+            collider.Reset();
+        }
+    }
+
     public void EnterMovementMode()
     {
         ExitReferenceMode();
@@ -21,7 +29,7 @@ public class MapManager : MonoBehaviour
     public void EnterReferenceMode()
     {
         ExitMovementMode();
-        foreach(var collider in ReferencePlanes)
+        foreach (var collider in ReferencePlanes)
         {
             collider.EnterReferenceMode();
         }
@@ -43,7 +51,7 @@ public class MapManager : MonoBehaviour
 
     private void Update()
     {
-        if(isFixingZXRotation)
+        if (isFixingZXRotation)
         {
             this.transform.eulerAngles = new Vector3(fixedRotation.x, this.transform.eulerAngles.y, fixedRotation.z);
         }

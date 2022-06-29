@@ -26,6 +26,7 @@ public class MenuManager : MonoBehaviour
     public TMP_Dropdown TilesDropdown;
 
     public InputManager InputManager;
+    public GameManager GameManager;
 
     [Serializable]
     public class TileInfo
@@ -98,6 +99,7 @@ public class MenuManager : MonoBehaviour
 
     private void ResetMap()
     {
+        MapManager.ResetRefPlane();
         var children = MapManager.GetComponentsInChildren<TileManager>();
         foreach (var tile in children)
         {
@@ -108,9 +110,22 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    public void GoToPlay()
+    {
+        ResetMap();
+        InputManager.GameState = GameStates.Play;
+        MainMenu.SetActive(false);
+        Settings.SetActive(false);
+        Create.SetActive(true);
+        ReferencePlane.SetActive(true);
+        InputManager.Load();
+        GameManager.StartGame(InputManager.GetMap());
+    }
+
     public void GoToMainMenu()
     {
         ResetMap();
+        InputManager.GameState = GameStates.None;
         MainMenu.SetActive(true);
         Settings.SetActive(false);
         Create.SetActive(false);
@@ -120,6 +135,7 @@ public class MenuManager : MonoBehaviour
     public void GoToCreate()
     {
         ResetMap();
+        InputManager.GameState = GameStates.Create;
         MainMenu.SetActive(false);
         Settings.SetActive(false);
         Create.SetActive(true);

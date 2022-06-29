@@ -1157,7 +1157,7 @@ GameObject:
   - component: {fileID: 516356241}
   m_Layer: 2
   m_Name: Text (TMP)
-  m_TagString: Untagged
+  m_TagString: Log
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1296,6 +1296,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a07b243a0c9e97b4cbb84f610d946579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GameState: 0
   rayAnchor: {fileID: 40919615}
   SelectedTile: 0
   MenuManager: {fileID: 1922019917}
@@ -2411,6 +2412,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 893847312}
   m_CullTransparentMesh: 1
+--- !u!1 &904559455
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 904559457}
+  - component: {fileID: 904559458}
+  - component: {fileID: 904559459}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &904559457
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904559455}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.13980493, y: 0.4785905, z: 0.7631861}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &904559458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904559455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a7fd7330d77e42a9b94f20239497773, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionsManager: {fileID: 904559459}
+--- !u!114 &904559459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 904559455}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 479fa291d22414f70b9bc581732932a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameManager: {fileID: 904559458}
+  Buttons: []
 --- !u!1 &1022705906
 GameObject:
   m_ObjectHideFlags: 0
@@ -2635,7 +2696,7 @@ GameObject:
   - component: {fileID: 1064216203}
   - component: {fileID: 1064216202}
   - component: {fileID: 1064216201}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bottom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2964,7 +3025,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1174172729}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1922019917}
+        m_TargetAssemblyTypeName: MenuManager, Assembly-CSharp
+        m_MethodName: GoToPlay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1174172729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3659,7 +3732,7 @@ GameObject:
   - component: {fileID: 1685705846}
   - component: {fileID: 1685705849}
   - component: {fileID: 1685705850}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Top
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4365,6 +4438,7 @@ MonoBehaviour:
   PrefsManager: {fileID: 1764020308}
   TilesDropdown: {fileID: 333520504}
   InputManager: {fileID: 545508070}
+  GameManager: {fileID: 904559458}
   Tiles:
   - Label: Sewer
     Tiles:

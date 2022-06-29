@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1664780996514230476}
   m_Layer: 0
   m_Name: Plane (3)
-  m_TagString: ForbiddenTile
+  m_TagString: SelectableTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 5554294507655752976}
   m_Layer: 0
   m_Name: Plane (2)
-  m_TagString: ForbiddenTile
+  m_TagString: SelectableTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -210,7 +210,7 @@ GameObject:
   - component: {fileID: 6636292893982301745}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: ForbiddenTile
+  m_TagString: SelectableTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -308,7 +308,7 @@ GameObject:
   - component: {fileID: 4665135419971966390}
   m_Layer: 0
   m_Name: Plane (1)
-  m_TagString: ForbiddenTile
+  m_TagString: SelectableTile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
