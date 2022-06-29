@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2159810307152181848}
   - component: {fileID: 2159810307152181851}
+  - component: {fileID: -5351481565101311899}
   m_Layer: 0
   m_Name: objects_column
   m_TagString: Untagged
@@ -46,7 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 20
-  Snap: 40
+  Snap: 20
+--- !u!114 &-5351481565101311899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2159810307152181849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4531f90326353418da04c3b460141b37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2159810306319068464
 PrefabInstance:
   m_ObjectHideFlags: 0

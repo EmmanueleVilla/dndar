@@ -11,6 +11,8 @@ using System;
 using System.Text;
 using Logic.Core.Map.Impl;
 using DndCore.Map;
+using Logic.Core.Creatures;
+using Logic.Core.Creatures.Bestiary;
 
 public class InputManager : MonoBehaviour
 {
@@ -41,6 +43,11 @@ public class InputManager : MonoBehaviour
     {
         debouncing = true;
         lastHit = Time.realtimeSinceStartup;
+    }
+
+    void Start()
+    {
+        DndCore.DI.DndModule.RegisterRules(false, null, null, false);
     }
 
     public void Load()
@@ -285,21 +292,12 @@ public class InputManager : MonoBehaviour
             if (quantization != null)
             {
                 var cells = quantization.ToMap();
-                //Log.text += "Localposition x: " + tile.transform.localPosition.x + "\n";
-                //Log.text += "Localposition y: " + tile.transform.localPosition.y + "\n";
-                Log.text += "Localposition y: " + tile.transform.localPosition.y + "\n";
                 int shiftedX = -1 * ((int)(tile.transform.localPosition.x * 100) - 50);
                 int shiftedZ = -1 * ((int)(tile.transform.localPosition.z * 100) - 50);
                 int shiftedY = (int)(Math.Round((tile.transform.localPosition.y - minY) * 100 / 5.0) * 5);
-                //Log.text += "shiftedX: " + shiftedX + "\n";
-                //Log.text += "shiftedZ: " + shiftedZ + "\n";
-                Log.text += "shiftedY: " + shiftedY + "\n";
                 int x = (int)(shiftedX / 2.5);
                 int z = (int)(shiftedZ / 2.5);
                 byte y = (byte)(shiftedY);
-                Log.text += "Cell position y: " + y + "\n";
-                //Log.text += "Cell position x: " + x + "\n";
-                //Log.text += "Cell position z: " + z + "\n";
                 for (int i = 0; i < cells.Count; i++)
                 {
                     int xx = cells[i].X + x;
@@ -313,6 +311,49 @@ public class InputManager : MonoBehaviour
                         zz
                     ));
                 }
+            }
+        }
+
+        foreach (var tile in children)
+        {
+            var quantization = tile.GetComponent<ObjectQuantization>();
+            if (quantization != null)
+            {
+                var cells = quantization.ToMap();
+                int shiftedX = -1 * ((int)(tile.transform.localPosition.x * 100) - 50);
+                int shiftedZ = -1 * ((int)(tile.transform.localPosition.z * 100) - 50);
+                int shiftedY = (int)(Math.Round((tile.transform.localPosition.y - minY) * 100 / 5.0) * 5);
+                int x = (int)(shiftedX / 2.5);
+                int z = (int)(shiftedZ / 2.5);
+                byte y = (byte)(shiftedY);
+                for (int i = 0; i < cells.Count; i++)
+                {
+                    int xx = cells[i].X + x;
+                    int zz = cells[i].Y + z;
+                    byte yy = (byte)((int)cells[i].Height + (int)y);
+                    map.SetCell(xx, zz, new CellInfo(
+                        cells[i].Terrain,
+                        yy,
+                        null,
+                        xx,
+                        zz
+                    ));
+                }
+            }
+        }
+
+        foreach (var tile in children)
+        {
+            var quantization = tile.GetComponent<CharacterQuantization>();
+            if (quantization != null)
+            {
+                var info = quantization.ToMap();
+                int shiftedX = -1 * ((int)(tile.transform.localPosition.x * 100) - 50);
+                int shiftedZ = -1 * ((int)(tile.transform.localPosition.z * 100) - 50);
+                int shiftedY = (int)(Math.Round((tile.transform.localPosition.y - minY) * 100 / 5.0) * 5);
+                int x = (int)(shiftedX / 2.5);
+                int z = (int)(shiftedZ / 2.5);
+                map.AddCreature(info.Creature, x + info.X, z + info.Y);
             }
         }
 
@@ -330,6 +371,11 @@ public class InputManager : MonoBehaviour
                 else
                 {
                     c += map.GetCellInfo(i, j).Height.ToString("D2");
+                }
+                ICreature creature = map.GetCellInfo(i, j).Creature;
+                if (creature != null)
+                {
+                    c = "$" + map.GetCellInfo(i, j).Height.ToString("D2");
                 }
                 Log.text += c;
             }

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8513508087446578326}
   - component: {fileID: 5007021081321039458}
+  - component: {fileID: -1497764627574577675}
   m_Layer: 0
   m_Name: kobold_rogue_root
   m_TagString: Untagged
@@ -46,7 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 29
-  Snap: 40
+  Snap: 20
+--- !u!114 &-1497764627574577675
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2307408369806747999}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a68c6c2052a6a40369185cba0ee4638b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1306537001465847714
 PrefabInstance:
   m_ObjectHideFlags: 0

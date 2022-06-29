@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4320014943360069167}
   - component: {fileID: 4320014943360069166}
+  - component: {fileID: 3226909879524471144}
   m_Layer: 0
   m_Name: wizard_root
   m_TagString: Untagged
@@ -46,7 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 27
-  Snap: 40
+  Snap: 20
+--- !u!114 &3226909879524471144
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4320014943360069164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ac08d4c647f2489b8a47611afadac3b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4320014942939095870
 PrefabInstance:
   m_ObjectHideFlags: 0

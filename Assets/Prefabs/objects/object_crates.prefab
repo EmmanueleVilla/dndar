@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5245801756085864232}
   - component: {fileID: 3877627827057622928}
+  - component: {fileID: -3716834319764592989}
   m_Layer: 0
   m_Name: object_crates
   m_TagString: Untagged
@@ -46,7 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 22
-  Snap: 40
+  Snap: 20
+--- !u!114 &-3716834319764592989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5245801756085864233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2ff7231720bd432dbe99f24105cdbba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5245801755499320912
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b26277208b24748c59d084a1716f8b19, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0414
+      value: -0.0152
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: b26277208b24748c59d084a1716f8b19, type: 3}
       propertyPath: m_LocalPosition.y

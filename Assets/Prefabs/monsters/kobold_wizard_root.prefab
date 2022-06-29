@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4013711957506701020}
   - component: {fileID: 4013711957506701023}
+  - component: {fileID: 7978734351120238550}
   m_Layer: 0
   m_Name: kobold_wizard_root
   m_TagString: Untagged
@@ -46,7 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 30
-  Snap: 40
+  Snap: 20
+--- !u!114 &7978734351120238550
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4013711957506701021}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4eef49c582df4eed82cdaa81e211ef2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4013711958525971465
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -126,19 +139,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: c7f636826f58a49378375135c371b07f, type: 3}
   m_PrefabInstance: {fileID: 4013711958525971465}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4013711958525971701
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4283758957591310680}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e8582345d88e5564e959709935f69441, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TileManager: {fileID: 4013711957506701021}
 --- !u!65 &4013711958525971466
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -152,3 +152,16 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.20690426, y: 0.16946758, z: 0.37894517}
   m_Center: {x: 0.0013221093, y: 0.0026490025, z: 0.1764783}
+--- !u!114 &4013711958525971701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4283758957591310680}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8582345d88e5564e959709935f69441, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TileManager: {fileID: 4013711957506701021}

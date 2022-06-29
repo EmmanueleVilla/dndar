@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8573916564852593974}
   - component: {fileID: 8573916564852593977}
+  - component: {fileID: -6625070226352764801}
   m_Layer: 0
   m_Name: objects_coffin
   m_TagString: Untagged
@@ -46,7 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 19
-  Snap: 40
+  Snap: 20
+--- !u!114 &-6625070226352764801
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8573916564852593975}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2ff7231720bd432dbe99f24105cdbba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8573916564946117415
 PrefabInstance:
   m_ObjectHideFlags: 0

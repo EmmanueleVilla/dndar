@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4431728284588738192}
   - component: {fileID: 4431728284588738193}
+  - component: {fileID: -6053215345079174235}
   m_Layer: 0
   m_Name: monk_root
   m_TagString: Untagged
@@ -46,7 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 25
-  Snap: 40
+  Snap: 20
+--- !u!114 &-6053215345079174235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4431728284588738199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 269f1a4a29fb54e84a6c65ffe18d449a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4431728283322560985
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c90c8ba5dc9844b3af8f698f2026211, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0118
+      value: 0.0239
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c90c8ba5dc9844b3af8f698f2026211, type: 3}
       propertyPath: m_LocalPosition.y
@@ -80,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c90c8ba5dc9844b3af8f698f2026211, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0085
+      value: 0.0015
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c90c8ba5dc9844b3af8f698f2026211, type: 3}
       propertyPath: m_LocalRotation.w

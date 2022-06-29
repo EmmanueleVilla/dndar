@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4523827446277197990}
   - component: {fileID: 4523827446277197991}
+  - component: {fileID: 8324867682291711967}
   m_Layer: 0
   m_Name: objects_statue
   m_TagString: Untagged
@@ -46,7 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 24
-  Snap: 40
+  Snap: 20
+--- !u!114 &8324867682291711967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4523827446277197985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4531f90326353418da04c3b460141b37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4523827446473436685
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 249a8101acb0f467aa363ae8894b6e22, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0128
+      value: 0.0117
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 249a8101acb0f467aa363ae8894b6e22, type: 3}
       propertyPath: m_LocalPosition.y

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1109428551391542887}
   - component: {fileID: 1109428551391542886}
+  - component: {fileID: -4455945815846151536}
   m_Layer: 0
   m_Name: ranger_root
   m_TagString: Untagged
@@ -46,7 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 26
-  Snap: 40
+  Snap: 20
+--- !u!114 &-4455945815846151536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1109428551391542888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e464070db7b4f019735f0b7fb79146, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1109428550720040213
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05b555011b2dc4eb88db25539b0f8ab5, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0129
+      value: 0.0121
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05b555011b2dc4eb88db25539b0f8ab5, type: 3}
       propertyPath: m_LocalPosition.y
@@ -80,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05b555011b2dc4eb88db25539b0f8ab5, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0135
+      value: 0.0138
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 05b555011b2dc4eb88db25539b0f8ab5, type: 3}
       propertyPath: m_LocalRotation.w

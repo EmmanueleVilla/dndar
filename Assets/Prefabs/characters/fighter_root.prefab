@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4030861579158434213}
   - component: {fileID: 4030861579158434214}
+  - component: {fileID: 398275962820166112}
   m_Layer: 0
   m_Name: fighter_root
   m_TagString: Untagged
@@ -46,7 +47,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 28
-  Snap: 40
+  Snap: 20
+--- !u!114 &398275962820166112
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4030861579158434212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f064c3a44c2a04c4e80b45923232dafb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4030861578145872218
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -72,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8fc6a2206b2a54c5d80c8a53d74a83b2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0016
+      value: 0.025
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8fc6a2206b2a54c5d80c8a53d74a83b2, type: 3}
       propertyPath: m_LocalPosition.y
@@ -80,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8fc6a2206b2a54c5d80c8a53d74a83b2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0025
+      value: 0.0247
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8fc6a2206b2a54c5d80c8a53d74a83b2, type: 3}
       propertyPath: m_LocalRotation.w
