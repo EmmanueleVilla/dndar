@@ -37,6 +37,7 @@ public class InputManager : MonoBehaviour
 
     public MenuManager MenuManager;
     public MapManager MapManager;
+    public UIManager UIManager;
 
     public TextMeshProUGUI Log;
 
@@ -279,7 +280,9 @@ public class InputManager : MonoBehaviour
 
     public IMap GetMap()
     {
-        return Save();
+        var map = Save();
+        this.StartCoroutine(UIManager.DrawMap(map));
+        return map;
     }
 
     IMap Save()
@@ -377,8 +380,9 @@ public class InputManager : MonoBehaviour
                 int shiftedY = (int)(Math.Round((tile.transform.localPosition.y - minY) * 100 / 5.0) * 5);
                 int x = (int)(shiftedX / 2.5);
                 int z = (int)(shiftedZ / 2.5);
-                Log.text += "\nAdding creature " + info.Creature.GetType() + " with id " + info.Creature.Id + " at " + (x+info.X) + "," + (z+info.Y);
-                if(!map.AddCreature(info.Creature, x + info.X, z + info.Y)){
+                Log.text += "\nAdding creature " + info.Creature.GetType() + " with id " + info.Creature.Id + " at " + (x + info.X) + "," + (z + info.Y);
+                if (!map.AddCreature(info.Creature, x + info.X, z + info.Y))
+                {
                     Log.text += "\nFailed";
                 }
             }

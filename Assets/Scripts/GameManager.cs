@@ -34,10 +34,12 @@ using System.Text;
 using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
+using Assets.Scripts.Jobs;
 
 public class GameManager : MonoBehaviour
 {
     public ActionsManager ActionsManager;
+    public UIManager UIManager;
     public IDndBattle Battle;
     public IMap map;
     private List<int> Initiatives;
@@ -66,7 +68,25 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            //this.StartCoroutine(AIPlay());
+            this.StartCoroutine(AIPlay());
         }
+    }
+
+    IEnumerator AIPlay()
+    {
+        var jobData = new AIPlayJob();
+
+        JobHandle handle = jobData.Schedule();
+
+        while (!handle.IsCompleted)
+        {
+            yield return null;
+        }
+
+        handle.Complete();
+
+        //yield return StartCoroutine(UIManager.ShowGameEvents(Battle.Events));
+
+        //NextTurn();
     }
 }

@@ -1029,6 +1029,7 @@ GameObject:
   m_Component:
   - component: {fileID: 465368469}
   - component: {fileID: 465368470}
+  - component: {fileID: 465368471}
   m_Layer: 0
   m_Name: Root
   m_TagString: MapRoot
@@ -1068,6 +1069,21 @@ MonoBehaviour:
   ReferencePlanes:
   - {fileID: 1685705850}
   - {fileID: 1064216201}
+--- !u!114 &465368471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465368468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29b6a357864d249dbbb6d8c727344717, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SelectionTile: {fileID: 5347009842753814457, guid: aaedee31836b14ece88f551b3ee6fa2d, type: 3}
+  MapRoot: {fileID: 465368468}
+  Log: {fileID: 516356241}
 --- !u!1 &508019829
 GameObject:
   m_ObjectHideFlags: 0
@@ -1301,6 +1317,7 @@ MonoBehaviour:
   SelectedTile: 0
   MenuManager: {fileID: 1922019917}
   MapManager: {fileID: 465368470}
+  UIManager: {fileID: 465368471}
   Log: {fileID: 516356241}
 --- !u!1 &549015124 stripped
 GameObject:
@@ -2458,6 +2475,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActionsManager: {fileID: 904559459}
+  UIManager: {fileID: 0}
 --- !u!114 &904559459
 MonoBehaviour:
   m_ObjectHideFlags: 0
