@@ -60,7 +60,7 @@ public class UIManager : MonoBehaviour
                 Log.text += string.Format("\n{0},{1},{2}", cell.X, cell.Y, cell.Height);
                 GameObject go = Instantiate(SelectionTile);
                 go.transform.parent = MapRoot.transform;
-                go.transform.localPosition = new Vector3(0, 0.0015f, 0);
+                go.transform.localPosition = new Vector3(0.5f + 0.0125f - cell.X * 0.025f, 0.0015f, 0.5f + 0.0125f - cell.Y * 0.025f);
                 //go.transform.localPosition = new Vector3(cell.X * 0.025f, 0.0015f, cell.Y * 0.025f);
             }
         }
