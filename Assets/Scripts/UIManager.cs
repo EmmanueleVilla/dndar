@@ -41,6 +41,7 @@ public class UIManager : MonoBehaviour
 {
     public GameObject SelectionTile;
     public GameObject MapRoot;
+    public GameObject Ball;
 
     public TextMeshProUGUI Log;
 
@@ -113,6 +114,21 @@ public class UIManager : MonoBehaviour
                         0.25f
                         ));
                 }
+
+                if (eve.Type == GameEvent.Types.Attacks || eve.Type == GameEvent.Types.Spell)
+                {
+                    GameObject target = creatures.FirstOrDefault(x => x.Creature.Id == eve.Attacked).gameObject;
+                    GameObject start = creatures.FirstOrDefault(x => x.Creature.Id == eve.Attacker).gameObject;
+                    if (start != null && target != null)
+                    {
+                        GameObject ball = Instantiate(Ball);
+                        ball.transform.parent = start.transform.parent;
+                        yield return StartCoroutine(Move(ball, start.transform.localPosition, target.transform.localPosition, 1.0f));
+                        Destroy(ball);
+                    }
+                    //var renderers = target.GetComponentsInChildren<SpriteRenderer>().ToList();
+                    //yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.red));
+                }
                 /*
                 if (eve.Type == GameEvent.Types.Falling)
                 {
@@ -151,62 +167,6 @@ public class UIManager : MonoBehaviour
                     yield return new WaitForSeconds(0.5f);
                     Miss.SetActive(false);
                 }
-
-                if (eve.Type == GameEvent.Types.Spell)
-                {
-                    //DndModule.Get<ILogger>().WriteLine(eve.LogDescription);
-                    GameObject target = null;
-                    GameObject start = null;
-                    GameObject ball = Instantiate(Ball);
-                    foreach (var indicator in initiativeIndicators)
-                    {
-                        if (indicator.Item1 == eve.Attacker)
-                        {
-                            start = indicator.Item2.gameObject;
-                        }
-                        if (indicator.Item1 == eve.Attacked)
-                        {
-                            target = indicator.Item2.gameObject;
-                        }
-                    }
-                    if (start != null && target != null)
-                    {
-                        ball.transform.parent = start.transform.parent;
-                        yield return StartCoroutine(Move(ball, start.transform.localPosition + Vector3.up * 5, target.transform.localPosition + Vector3.up * 5, 1.0f));
-                        Destroy(ball);
-                        var renderers = target.GetComponentsInChildren<SpriteRenderer>().ToList();
-                        yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.red));
-                    }
-                    else
-                    {
-                        Destroy(ball);
-                    }
-
-                }
-
-                if (eve.Type == GameEvent.Types.Attacks)
-                {
-                    //DndModule.Get<ILogger>().WriteLine(eve.LogDescription);
-                    GameObject target = null;
-                    GameObject start = null;
-                    GameObject ball = Instantiate(Ball);
-                    foreach (var indicator in initiativeIndicators)
-                    {
-                        if (indicator.Item1 == eve.Attacker)
-                        {
-                            start = indicator.Item2.gameObject;
-                        }
-                        if (indicator.Item1 == eve.Attacked)
-                        {
-                            target = indicator.Item2.gameObject;
-                        }
-                    }
-                    ball.transform.parent = start.transform.parent;
-                    yield return StartCoroutine(Move(ball, start.transform.localPosition + Vector3.up * 5, target.transform.localPosition + Vector3.up * 5, 1.0f));
-                    Destroy(ball);
-                    var renderers = target.GetComponentsInChildren<SpriteRenderer>().ToList();
-                    yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.red));
-                }
                 */
                 yield return null;
             }
@@ -214,6 +174,17 @@ public class UIManager : MonoBehaviour
     }
 
     private IEnumerator MoveToIterator(GameObject go, Vector3 start, Vector3 end, float time)
+    {
+        var now = Time.realtimeSinceStartup;
+        while (Time.realtimeSinceStartup - now < time)
+        {
+            var newPos = Vector3.Lerp(start, end, (Time.realtimeSinceStartup - now) / time);
+            go.transform.localPosition = newPos;
+            yield return null;
+        }
+    }
+
+    private IEnumerator Move(GameObject go, Vector3 start, Vector3 end, float time)
     {
         var now = Time.realtimeSinceStartup;
         while (Time.realtimeSinceStartup - now < time)
@@ -260,18 +231,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    
-
-    private IEnumerator Move(GameObject go, Vector3 start, Vector3 end, float time)
-    {
-        var now = Time.realtimeSinceStartup;
-        while (Time.realtimeSinceStartup - now < time)
-        {
-            var newPos = Vector3.Lerp(start, end, (Time.realtimeSinceStartup - now) / time);
-            go.transform.localPosition = newPos;
-            yield return null;
-        }
-    }
 
     private IEnumerator ColorEffect(List<SpriteRenderer> renderers, float time, Color end)
     {
