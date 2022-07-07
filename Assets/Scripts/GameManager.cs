@@ -44,13 +44,15 @@ public class GameManager : MonoBehaviour
     public IMap map;
     private List<int> Initiatives;
     TextMeshProUGUI Log;
-    public void StartGame(IMap map)
+    public IEnumerator StartGame(IMap map)
     {
         Log = GameObject.FindGameObjectsWithTag("Log")[0].GetComponent<TextMeshProUGUI>();
-        Log.text += "\nSTART GAME";
+        //Log.text += "\nSTART GAME";
         Battle = DndModule.Get<IDndBattle>();
+        //Log.text += "\nBattle " + Battle;
         //GameStarted?.Invoke(this, EventArgs.Empty);
-        //yield return StartCoroutine(UIManager.DrawMap(map));
+        //Log.text += "\nDrawing map";
+        yield return StartCoroutine(UIManager.DrawMap(map));
         Initiatives = Battle.Init(map);
         //InitiativesRolled?.Invoke(this, Initiatives);
         StartTurn();
@@ -58,22 +60,31 @@ public class GameManager : MonoBehaviour
 
     private void StartTurn()
     {
+        //Log.text += "\nStartTurn 1";
         var creature = Battle.GetCreatureInTurn();
-        Log.text += "\nStart turn of " + creature.GetType().ToString().Split('.').Last();
+        //Log.text += "\nStartTurn 2";
+        //Log.text += "\nStart turn of " + creature.GetType().ToString().Split('.').Last();
         //TurnStarted?.Invoke(this, creature);
         ActionsManager.SetActions(new List<IAvailableAction>());
+        //Log.text += "\nStartTurn 3";
+        this.StartCoroutine(AIPlay());
+        /*
         if (creature.Loyalty == Loyalties.Ally)
         {
+            //Log.text += "\nStartTurn ally";
             //this.StartCoroutine(SetAvailableActions());
         }
         else
         {
+            //Log.text += "\nStartTurn AI";
             this.StartCoroutine(AIPlay());
         }
+        */
     }
 
     IEnumerator AIPlay()
     {
+        //Log.text += "\nAIPlay 1";
         var jobData = new AIPlayJob();
 
         JobHandle handle = jobData.Schedule();
@@ -83,10 +94,13 @@ public class GameManager : MonoBehaviour
             yield return null;
         }
 
+        //Log.text += "\nAIPlay 2";
         handle.Complete();
 
-        //yield return StartCoroutine(UIManager.ShowGameEvents(Battle.Events));
+        //Log.text += "\nAIPlay 3";
+        yield return StartCoroutine(UIManager.ShowGameEvents(Battle.Events));
 
-        //NextTurn();
+        Battle.NextTurn();
+        StartTurn();
     }
 }

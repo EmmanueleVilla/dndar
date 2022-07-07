@@ -66,7 +66,6 @@ public class InputManager : MonoBehaviour
     {
         var cache = PlayerPrefs.GetString("saved_map", "");
         var objects = cache.Split("\n");
-        Log.text = "Loaded " + cache;
         foreach (var tile in objects)
         {
             try
@@ -89,7 +88,6 @@ public class InputManager : MonoBehaviour
             }
             catch (Exception e)
             {
-                //Log.text += e.ToString();
             }
         }
     }
@@ -193,7 +191,6 @@ public class InputManager : MonoBehaviour
                         collider.enabled = false;
                     }
 
-                    Log.text = SelectedTile.ToString();
                     return;
                 }
                 if (buttonTwo && !debouncing)
@@ -281,7 +278,6 @@ public class InputManager : MonoBehaviour
     public IMap GetMap()
     {
         var map = Save();
-        this.StartCoroutine(UIManager.DrawMap(map));
         return map;
     }
 
@@ -290,7 +286,6 @@ public class InputManager : MonoBehaviour
         var children = MapManager.GetComponentsInChildren<TileManager>();
         var saveFile = new StringBuilder();
         ArrayDndMap map = new ArrayDndMap(42, 42, new CellInfo(' ', 0));
-        Log.text = "";
         var minY = 0f;
 
         foreach (var tile in children)
@@ -380,18 +375,15 @@ public class InputManager : MonoBehaviour
                 int shiftedY = (int)(Math.Round((tile.transform.localPosition.y - minY) * 100 / 5.0) * 5);
                 int x = (int)(shiftedX / 2.5);
                 int z = (int)(shiftedZ / 2.5);
-                Log.text += "\nAdding creature " + info.Creature.GetType() + " with id " + info.Creature.Id + " at " + (x + info.X) + "," + (z + info.Y);
                 if (!map.AddCreature(info.Creature, x + info.X, z + info.Y))
                 {
-                    Log.text += "\nFailed";
+                    //Log.text += "\nFailed to add creature";
                 }
             }
         }
 
-        Log.text += "\n<mspace=0.75em>Begin map\n";
         for (int j = 41; j >= 0; j--)
         {
-            Log.text += j.ToString("D2");
             for (int i = 0; i < 42; i++)
             {
                 String c = map.GetCellInfo(i, j).Terrain + "";
@@ -408,9 +400,7 @@ public class InputManager : MonoBehaviour
                 {
                     c = "$" + map.GetCellInfo(i, j).Height.ToString("D2");
                 }
-                Log.text += c;
             }
-            Log.text += "\n";
         }
 
         PlayerPrefs.SetString("saved_map", saveFile.ToString());

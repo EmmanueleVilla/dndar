@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: -6053215345079174235}
   m_Layer: 0
   m_Name: monk_root
-  m_TagString: Untagged
+  m_TagString: Creature
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4431728284588738199}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0118, y: 0, z: 0.0083}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -85,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c90c8ba5dc9844b3af8f698f2026211, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0239
+      value: 0.0117
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c90c8ba5dc9844b3af8f698f2026211, type: 3}
       propertyPath: m_LocalPosition.y
@@ -93,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c90c8ba5dc9844b3af8f698f2026211, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0015
+      value: 0.0104
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c90c8ba5dc9844b3af8f698f2026211, type: 3}
       propertyPath: m_LocalRotation.w

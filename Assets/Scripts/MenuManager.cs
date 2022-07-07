@@ -119,7 +119,7 @@ public class MenuManager : MonoBehaviour
         Create.SetActive(true);
         ReferencePlane.SetActive(true);
         InputManager.Load();
-        GameManager.StartGame(InputManager.GetMap());
+        this.StartCoroutine(GameManager.StartGame(InputManager.GetMap()));
     }
 
     public void GoToMainMenu()

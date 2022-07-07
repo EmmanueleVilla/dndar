@@ -9,6 +9,7 @@ TagManager:
   - SelectableTile
   - ForbiddenTile
   - Log
+  - Creature
   layers:
   - Default
   - TransparentFX

@@ -1084,6 +1084,7 @@ MonoBehaviour:
   SelectionTile: {fileID: 5347009842753814457, guid: aaedee31836b14ece88f551b3ee6fa2d, type: 3}
   MapRoot: {fileID: 465368468}
   Log: {fileID: 516356241}
+  GameManager: {fileID: 904559458}
 --- !u!1 &508019829
 GameObject:
   m_ObjectHideFlags: 0
@@ -1546,6 +1547,14 @@ PrefabInstance:
       propertyPath: _ovrCameraRig
       value: 
       objectReference: {fileID: 230564033}
+    - target: {fileID: 4207401243937369097, guid: 2f94427b8dd14ea498fd92aee3ec9f0f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5881388596992792706, guid: 2f94427b8dd14ea498fd92aee3ec9f0f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6357171400049970933, guid: 2f94427b8dd14ea498fd92aee3ec9f0f, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -1593,6 +1602,10 @@ PrefabInstance:
     - target: {fileID: 6678269571562373685, guid: 2f94427b8dd14ea498fd92aee3ec9f0f, type: 3}
       propertyPath: m_Name
       value: InputOVR
+      objectReference: {fileID: 0}
+    - target: {fileID: 7492948280346023700, guid: 2f94427b8dd14ea498fd92aee3ec9f0f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f94427b8dd14ea498fd92aee3ec9f0f, type: 3}
@@ -2475,7 +2488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActionsManager: {fileID: 904559459}
-  UIManager: {fileID: 0}
+  UIManager: {fileID: 465368471}
 --- !u!114 &904559459
 MonoBehaviour:
   m_ObjectHideFlags: 0
