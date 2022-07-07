@@ -93,31 +93,23 @@ public class UIManager : MonoBehaviour
 
     internal IEnumerator ShowGameEvents(List<GameEvent> events)
     {
-        //Log.text += "\n1";
         var gos = GameObject.FindGameObjectsWithTag("Creature");
-        //Log.text += "\n2";
-        //Log.text += "\nFound " + gos.Length + " objects";
         var creatures = gos.Select(x =>
         {
-            //Log.text += "\nFound object: " + x;
             return x.GetComponent<CharacterQuantization>();
         });
         var creatureInTurn = creatures.FirstOrDefault(x => x.Creature.Id == GameManager.Battle.GetCreatureInTurn().Id);
-        //Log.text += "\ncreature in turn: " + creatureInTurn;
-        //Log.text += "\nevents: " + events;
         if (events != null)
         {
             foreach (var eve in events)
             {
-                //Log.text += "\nevent: " + eve.Type;
                 if (eve.Type == GameEvent.Types.Movement)
                 {
-                    //Log.text += "\ntarget tile: " + eve.Destination.X + "," + eve.Destination.Y;
                     var tile = tiles.First(tile => tile.X == eve.Destination.Y && tile.Y == eve.Destination.X);
                     var target = tile.transform.localPosition;
                     yield return StartCoroutine(MoveToIterator(creatureInTurn.gameObject,
                         creatureInTurn.gameObject.transform.localPosition,
-                        target + new Vector3(0.0125f, 0, -0.0125f),
+                        target,
                         0.25f
                         ));
                 }

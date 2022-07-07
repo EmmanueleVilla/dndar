@@ -221,7 +221,16 @@ public class InputManager : MonoBehaviour
                     selectedTilePrefab.transform.position = point;
                     selectedTilePrefab.transform.parent = hit.transform.parent;
                     var snap = selectedTilePrefab.GetComponent<TileManager>().Snap;
-                    selectedTilePrefab.transform.localPosition = new Vector3(Mathf.Round(selectedTilePrefab.transform.localPosition.x * snap) / snap, hit.transform.localPosition.y + 0.01f, Mathf.Round(selectedTilePrefab.transform.localPosition.z * snap) / snap);
+                    var delta = 0.0f;
+                    if (SelectedTile.ToString().StartsWith("Character") || SelectedTile.ToString().StartsWith("Monster"))
+                    {
+                        delta = 0.0125f;
+                    }
+                    selectedTilePrefab.transform.localPosition = new Vector3(
+                        (Mathf.Round(selectedTilePrefab.transform.localPosition.x * snap) / snap) + delta,
+                        hit.transform.localPosition.y + 0.01f,
+                        (Mathf.Round(selectedTilePrefab.transform.localPosition.z * snap) / snap) - delta
+                        );
                     if (buttonTwo && !debouncing)
                     {
                         StartDebounce();
@@ -364,6 +373,8 @@ public class InputManager : MonoBehaviour
             }
         }
 
+        Log.text = "";
+
         foreach (var tile in children)
         {
             var quantization = tile.GetComponent<CharacterQuantization>();
@@ -373,17 +384,20 @@ public class InputManager : MonoBehaviour
                 int shiftedX = -1 * ((int)(tile.transform.localPosition.x * 100) - 50);
                 int shiftedZ = -1 * ((int)(tile.transform.localPosition.z * 100) - 50);
                 int shiftedY = (int)(Math.Round((tile.transform.localPosition.y - minY) * 100 / 5.0) * 5);
-                int x = (int)(shiftedX / 2.5);
-                int z = (int)(shiftedZ / 2.5);
-                if (!map.AddCreature(info.Creature, x + info.X, z + info.Y))
+                int x = (int)(shiftedX / 2.5) + 1;
+                int z = (int)(shiftedZ / 2.5) + 1;
+                if (!map.AddCreature(info.Creature, x, z))
                 {
                     //Log.text += "\nFailed to add creature";
                 }
             }
         }
+        //Log.text += "\n<mspace=0.75em>Begin map\n";
 
         for (int j = 41; j >= 0; j--)
         {
+            //Log.text += j.ToString("D2");
+
             for (int i = 0; i < 42; i++)
             {
                 String c = map.GetCellInfo(i, j).Terrain + "";
@@ -400,9 +414,10 @@ public class InputManager : MonoBehaviour
                 {
                     c = "$" + map.GetCellInfo(i, j).Height.ToString("D2");
                 }
+                //Log.text += c;
             }
+            //Log.text += "\n";
         }
-
         PlayerPrefs.SetString("saved_map", saveFile.ToString());
         return map;
     }

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TileType: 25
-  Snap: 20
+  Snap: 40
 --- !u!114 &-6053215345079174235
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -85,7 +85,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c90c8ba5dc9844b3af8f698f2026211, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0117
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c90c8ba5dc9844b3af8f698f2026211, type: 3}
       propertyPath: m_LocalPosition.y
@@ -93,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c90c8ba5dc9844b3af8f698f2026211, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.0104
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1c90c8ba5dc9844b3af8f698f2026211, type: 3}
       propertyPath: m_LocalRotation.w
