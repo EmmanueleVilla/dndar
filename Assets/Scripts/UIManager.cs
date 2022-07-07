@@ -117,7 +117,7 @@ public class UIManager : MonoBehaviour
                     var target = tile.transform.localPosition;
                     yield return StartCoroutine(MoveToIterator(creatureInTurn.gameObject,
                         creatureInTurn.gameObject.transform.localPosition,
-                        target,
+                        target + new Vector3(0.0125f, 0, -0.0125f),
                         0.25f
                         ));
                 }
