@@ -6,4 +6,5 @@ public class SpriteManager : MonoBehaviour
 {
     public int X;
     public int Y;
+    public MeshRenderer Knob;
 }

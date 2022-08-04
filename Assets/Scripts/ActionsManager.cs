@@ -40,10 +40,12 @@ using Logic.Core.Battle.Actions.Attacks;
 using Logic.Core.Battle.Actions.Movement;
 using Logic.Core.Battle.Actions.Spells;
 using UnityEngine.UI;
+using System.Diagnostics;
 
 public class ActionsManager : MonoBehaviour
 {
     public GameManager GameManager;
+    public GameObject Play;
     public GameObject[] Buttons;
 
     List<IAvailableAction> Actions;
@@ -57,6 +59,7 @@ public class ActionsManager : MonoBehaviour
 
     public void SetActions(List<IAvailableAction> actions)
     {
+        Play.SetActive(false);
         Actions = actions;
         foreach (var button in Buttons)
         {
@@ -68,17 +71,21 @@ public class ActionsManager : MonoBehaviour
             Buttons[i].gameObject.SetActive(true);
             Buttons[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().text = actions[i].Description;
         }
+        Play.SetActive(true);
     }
 
+    public TextMeshProUGUI Log;
     public void SelectAction(int index)
     {
+        Log.text += "\nSelect action " + index + " from " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
         switch (Actions[index].ActionType)
         {
             case ActionsTypes.RequestMovement:
-                //GameManager.EnterMovementMode();
+                GameManager.EnterMovementMode();
                 break;
             case ActionsTypes.CancelMovement:
-                //GameManager.ExitMovementMode();
+                Log.text += "\nCancelMovement";
+                GameManager.ExitMovementMode();
                 break;
             case ActionsTypes.ConfirmMovement:
                 var action = Actions[index] as ConfirmMovementAction;

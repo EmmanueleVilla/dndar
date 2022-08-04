@@ -35,6 +35,7 @@ using Unity.Collections;
 using Unity.Jobs;
 using UnityEngine;
 using Assets.Scripts.Jobs;
+using System.Diagnostics;
 
 
 public class UIManager : MonoBehaviour
@@ -68,7 +69,6 @@ public class UIManager : MonoBehaviour
                 {
                     continue;
                 }
-                ////Log.text += "\nCell " + x + "," + y;
                 GameObject go = Instantiate(SelectionTile);
                 go.transform.parent = MapRoot.transform;
                 go.transform.localScale = Vector3.zero;
@@ -98,6 +98,27 @@ public class UIManager : MonoBehaviour
             }
         }
         InitiativeIndicator.transform.localScale = new Vector3(0.05f, -0.1f, 0.05f);
+    }
+
+    internal void HighlightMovement(List<MemoryEdge> result)
+    {
+        Log.text += "\nHighlightMovement";
+        foreach (var tile in tiles)
+        {
+            if (result.Any(res => res.Destination.X == tile.Y && res.Destination.Y == tile.X && res.Speed > 0))
+            {
+                tile.transform.localScale = Vector3.one * 0.0025f;
+            }
+        }
+    }
+
+    internal void ResetCellsUI()
+    {
+        Log.text += "\nResetCellsUI from " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
+        foreach (var tile in tiles)
+        {
+            tile.transform.localScale = Vector3.zero;
+        }
     }
 
     internal IEnumerator ShowGameEvents(List<GameEvent> events)
@@ -205,6 +226,10 @@ public class UIManager : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Battle == null)
+        {
+            return;
+        }
         var inTurn = GameManager.Battle.GetCreatureInTurn();
         if (inTurn == null)
         {
@@ -225,132 +250,20 @@ public class UIManager : MonoBehaviour
             InitiativeIndicator.transform.localPosition = creatureInTurn.transform.localPosition + new Vector3(0f, 0.05f, 0f);
         }
     }
-
-    /*
-    public GameManager GameManager;
-    public GameObject MapRoot;
-    public GameObject Miss;
-
-    
-
-    public static GameObject creatureInTurn;
-    //List<Tuple<int, InitiativeIndicator>> initiativeIndicators = new List<Tuple<int, InitiativeIndicator>>();
-
-    public GameObject Ball;
-
-    void Start()
+    internal void ShowPath(List<CellInfo> cellPath, MemoryEdge end, Material color)
     {
-        Miss.SetActive(false);
-    }
-
-    void Update()
-    {
-        foreach (var indicator in initiativeIndicators)
-        {
-            if (!GameManager.Battle.Map.Creatures.ContainsKey(indicator.Item1))
-            {
-                indicator.Item2.gameObject.SetActive(false);
-            }
-            if (indicator.Item1 == GameManager.Battle.GetCreatureInTurn().Id)
-            {
-                indicator.Item2.Show();
-                creatureInTurn = indicator.Item2.gameObject;
-            }
-            else
-            {
-                indicator.Item2.Hide();
-            }
-        }
-    }
-
-
-    private IEnumerator ColorEffect(List<SpriteRenderer> renderers, float time, Color end)
-    {
-        time *= 2;
-        var now = Time.realtimeSinceStartup;
-        while (Time.realtimeSinceStartup - now < time)
-        {
-            var newColor = Color.Lerp(Color.white, end, (Time.realtimeSinceStartup - now) / time);
-            foreach (var renderer in renderers)
-            {
-                renderer.color = newColor;
-            }
-            yield return null;
-        }
-
-        now = Time.realtimeSinceStartup;
-        while (Time.realtimeSinceStartup - now < time)
-        {
-            var newColor = Color.Lerp(end, Color.white, (Time.realtimeSinceStartup - now) / time);
-            foreach (var renderer in renderers)
-            {
-                renderer.color = newColor;
-            }
-            yield return null;
-        }
-    }
-
-    internal void ShowPath(List<CellInfo> cellPath, MemoryEdge end, Color color)
-    {
+        Log.text += "\nShowPath";
         foreach (var tile in tiles)
         {
             if (cellPath.Any(res => res.X == tile.Y && res.Y == tile.X) || (end.Destination.X == tile.Y && end.Destination.Y == tile.X))
             {
-                tile.knob.color = color;
+                tile.Knob.gameObject.SetActive(true);
+                tile.Knob.material = color;
             }
-        }
-    }
-
-    internal void HighlightSpell(List<CellInfo> reachableCells)
-    {
-        foreach (var tile in tiles)
-        {
-            if (!reachableCells.Any(res => res.X == tile.Y && res.Y == tile.X))
+            else
             {
-                tile.GetComponentInChildren<SpriteRenderer>().color = Color.grey;
+                tile.Knob.gameObject.SetActive(false);
             }
         }
     }
-
-    internal void ResetSpells()
-    {
-        ResetCellsUI();
-    }
-
-    internal void HighlightAttack(List<CellInfo> reachableCells)
-    {
-        foreach (var tile in tiles)
-        {
-            if (!reachableCells.Any(res => res.X == tile.Y && res.Y == tile.X))
-            {
-                tile.GetComponentInChildren<SpriteRenderer>().color = Color.grey;
-            }
-        }
-    }
-
-    internal void ResetAttacks()
-    {
-        ResetCellsUI();
-    }
-
-    internal void HighlightMovement(List<MemoryEdge> result)
-    {
-        foreach (var tile in tiles)
-        {
-            if (!result.Any(res => res.Destination.X == tile.Y && res.Destination.Y == tile.X && res.Speed > 0))
-            {
-                tile.GetComponentInChildren<SpriteRenderer>().color = Color.grey;
-            }
-        }
-    }
-
-    internal void ResetCellsUI()
-    {
-        foreach (var tile in tiles)
-        {
-            tile.GetComponentInChildren<SpriteRenderer>().color = Color.white;
-            tile.knob.color = new Color(1, 1, 1, 0);
-        }
-    }
-    */
 }
