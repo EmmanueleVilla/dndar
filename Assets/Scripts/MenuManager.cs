@@ -12,11 +12,13 @@ using static UnityEngine.UI.Dropdown;
 public class MenuManager : MonoBehaviour
 {
     public TextMeshProUGUI Log;
+    public UIManager UIManager;
 
     public GameObject MainMenu;
     public MapManager MapManager;
     public GameObject Settings;
     public GameObject Create;
+    public GameObject Play;
     public GameObject ReferencePlane;
 
     public GameObject TilesRoot;
@@ -91,6 +93,7 @@ public class MenuManager : MonoBehaviour
     public void GoToSettings()
     {
         ResetMap();
+        Play.SetActive(false);
         MainMenu.SetActive(false);
         Settings.SetActive(true);
         Create.SetActive(false);
@@ -100,6 +103,7 @@ public class MenuManager : MonoBehaviour
     private void ResetMap()
     {
         MapManager.ResetRefPlane();
+        UIManager.ResetUI();
         var children = MapManager.GetComponentsInChildren<TileManager>();
         foreach (var tile in children)
         {
@@ -113,10 +117,11 @@ public class MenuManager : MonoBehaviour
     public void GoToPlay()
     {
         ResetMap();
+        Play.SetActive(true);
         InputManager.GameState = GameStates.Play;
         MainMenu.SetActive(false);
         Settings.SetActive(false);
-        Create.SetActive(true);
+        Create.SetActive(false);
         ReferencePlane.SetActive(true);
         InputManager.Load();
         this.StartCoroutine(GameManager.StartGame(InputManager.GetMap()));
@@ -125,6 +130,7 @@ public class MenuManager : MonoBehaviour
     public void GoToMainMenu()
     {
         ResetMap();
+        Play.SetActive(false);
         InputManager.GameState = GameStates.None;
         MainMenu.SetActive(true);
         Settings.SetActive(false);
@@ -135,6 +141,7 @@ public class MenuManager : MonoBehaviour
     public void GoToCreate()
     {
         ResetMap();
+        Play.SetActive(false);
         InputManager.GameState = GameStates.Create;
         MainMenu.SetActive(false);
         Settings.SetActive(false);

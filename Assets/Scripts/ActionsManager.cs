@@ -66,13 +66,13 @@ public class ActionsManager : MonoBehaviour
         for (int i = 0; i < actions.Count && i < Buttons.Length; i++)
         {
             Buttons[i].gameObject.SetActive(true);
-            Buttons[i].gameObject.GetComponentInChildren<Text>().text = actions[i].Description;
+            Buttons[i].gameObject.GetComponentInChildren<TextMeshProUGUI>().text = actions[i].Description;
         }
     }
 
     public void SelectAction(int index)
     {
-        switch(Actions[index].ActionType)
+        switch (Actions[index].ActionType)
         {
             case ActionsTypes.RequestMovement:
                 //GameManager.EnterMovementMode();

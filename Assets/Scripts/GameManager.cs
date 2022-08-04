@@ -49,37 +49,39 @@ public class GameManager : MonoBehaviour
         Log = GameObject.FindGameObjectsWithTag("Log")[0].GetComponent<TextMeshProUGUI>();
         //Log.text += "\nSTART GAME";
         Battle = DndModule.Get<IDndBattle>();
-        //Log.text += "\nBattle " + Battle;
-        //GameStarted?.Invoke(this, EventArgs.Empty);
-        //Log.text += "\nDrawing map";
         yield return StartCoroutine(UIManager.DrawMap(map));
         Initiatives = Battle.Init(map);
-        //InitiativesRolled?.Invoke(this, Initiatives);
         StartTurn();
     }
 
     private void StartTurn()
     {
-        //Log.text += "\nStartTurn 1";
         var creature = Battle.GetCreatureInTurn();
-        //Log.text += "\nStartTurn 2";
-        //Log.text += "\nStart turn of " + creature.GetType().ToString().Split('.').Last();
-        //TurnStarted?.Invoke(this, creature);
         ActionsManager.SetActions(new List<IAvailableAction>());
-        //Log.text += "\nStartTurn 3";
-        this.StartCoroutine(AIPlay());
-        /*
         if (creature.Loyalty == Loyalties.Ally)
         {
-            //Log.text += "\nStartTurn ally";
-            //this.StartCoroutine(SetAvailableActions());
+            this.StartCoroutine(SetAvailableActions());
         }
         else
         {
-            //Log.text += "\nStartTurn AI";
             this.StartCoroutine(AIPlay());
         }
-        */
+    }
+
+    IEnumerator SetAvailableActions()
+    {
+        var jobData = new AvailableActionsJob();
+
+        JobHandle handle = jobData.Schedule();
+
+        while (!handle.IsCompleted)
+        {
+            yield return null;
+        }
+
+        handle.Complete();
+
+        ActionsManager.SetActions(Battle.GetAvailableActions());
     }
 
     IEnumerator AIPlay()

@@ -42,11 +42,18 @@ public class UIManager : MonoBehaviour
     public GameObject SelectionTile;
     public GameObject MapRoot;
     public GameObject Ball;
+    public GameObject InitiativeIndicator;
 
     public TextMeshProUGUI Log;
 
     List<SpriteManager> tiles = new List<SpriteManager>();
     public GameManager GameManager;
+
+    public void ResetUI()
+    {
+        InitiativeIndicator.transform.localScale = Vector3.zero;
+    }
+
     public IEnumerator DrawMap(IMap map)
     {
         tiles.Clear();
@@ -64,6 +71,7 @@ public class UIManager : MonoBehaviour
                 ////Log.text += "\nCell " + x + "," + y;
                 GameObject go = Instantiate(SelectionTile);
                 go.transform.parent = MapRoot.transform;
+                go.transform.localScale = Vector3.zero;
                 var delta = 0.0f;
                 if ((((int)cell.Height) % 5) == 1)
                 {
@@ -89,7 +97,7 @@ public class UIManager : MonoBehaviour
                 tiles.Add(sprite);
             }
         }
-        ////Log.text += "\nEnd drawing";
+        InitiativeIndicator.transform.localScale = new Vector3(0.05f, -0.1f, 0.05f);
     }
 
     internal IEnumerator ShowGameEvents(List<GameEvent> events)
@@ -123,11 +131,11 @@ public class UIManager : MonoBehaviour
                     {
                         GameObject ball = Instantiate(Ball);
                         ball.transform.parent = start.transform.parent;
-                        yield return StartCoroutine(Move(ball, start.transform.localPosition, target.transform.localPosition, 1.0f));
+                        yield return StartCoroutine(Move(ball, start.transform.localPosition + new Vector3(0f, 0.01f, 0f), target.transform.localPosition + new Vector3(0f, 0.01f, 0f), 1.0f));
                         Destroy(ball);
                     }
-                    //var renderers = target.GetComponentsInChildren<SpriteRenderer>().ToList();
-                    //yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.red));
+                    //var obj = Instantiate(HitPrefab);
+                    //obj.transform.localPosition = target.transform.localPosition;
                 }
                 /*
                 if (eve.Type == GameEvent.Types.Falling)
@@ -194,6 +202,30 @@ public class UIManager : MonoBehaviour
             yield return null;
         }
     }
+
+    void Update()
+    {
+        var inTurn = GameManager.Battle.GetCreatureInTurn();
+        if (inTurn == null)
+        {
+            return;
+        }
+        var gos = GameObject.FindGameObjectsWithTag("Creature");
+        if (gos == null || gos.Count() == 0)
+        {
+            return;
+        }
+        var creatures = gos.Select(x =>
+        {
+            return x?.GetComponent<CharacterQuantization>();
+        }).Where(x => x != null);
+        var creatureInTurn = creatures.FirstOrDefault(x => x != null && x.Creature != null && x.Creature.Id == inTurn.Id);
+        if (creatureInTurn != null)
+        {
+            InitiativeIndicator.transform.localPosition = creatureInTurn.transform.localPosition + new Vector3(0f, 0.05f, 0f);
+        }
+    }
+
     /*
     public GameManager GameManager;
     public GameObject MapRoot;
