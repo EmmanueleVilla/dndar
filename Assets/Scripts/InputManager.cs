@@ -140,7 +140,7 @@ public class InputManager : MonoBehaviour
 
         if (GameState == GameStates.Play)
         {
-            mask = LayerMask.GetMask("Default", "Plane", "InputTile");
+            mask = LayerMask.GetMask("InputTile");
         }
 
         var collides = Physics.Raycast(rayAnchor.position, rayAnchor.forward, out hit, 50.0f, mask);
@@ -276,24 +276,17 @@ public class InputManager : MonoBehaviour
         }
         if (GameState == GameStates.Play)
         {
+            Log.text = "collidingObject: " + collidingObject;
+            Log.text += "\nspriteManager: " + spriteManager;
+            Log.text += "\nreferencePlane: " + referencePlane;
             if (spriteManager != null)
             {
-                Log.text += "Sprite manager not null";
                 if (buttonOne)
                 {
-                    Log.text += "\n and button pressed";
                     GameManager.OnCellClicked(spriteManager.X, spriteManager.Y);
                 }
-                else
-                {
-                    Log.text += "\n and button NOT pressed";
-                }
             }
-            else
-            {
-                Log.text += "Sprite manager null";
-            }
-            if (referencePlane != null)
+            else if (referencePlane != null)
             {
                 if (indexTrigger > 0.1f)
                 {
