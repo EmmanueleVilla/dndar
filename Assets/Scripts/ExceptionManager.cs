@@ -17,7 +17,7 @@ public class ExceptionManager : MonoBehaviour
     {
         if (type == LogType.Exception && !stackTrace.Contains("InteractorGroup"))
         {
-            Text.text = logString + "\n" + stackTrace;
+            Text.text += logString + "\n" + stackTrace;
         }
     }
 }

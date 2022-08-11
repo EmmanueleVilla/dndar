@@ -146,13 +146,11 @@ public class InputManager : MonoBehaviour
         var collides = Physics.Raycast(rayAnchor.position, rayAnchor.forward, out hit, 50.0f, mask);
         if (!collides)
         {
-            Log.text = "Don't collide";
             return;
         }
 
         var collidingPoint = hit.point;
         var collidingObject = hit.transform.gameObject;
-        Log.text = "Collides with " + hit.transform.gameObject;
 
         var referencePlane = collidingObject.GetComponent<ReferencePlaneCollider>();
         var spriteManager = collidingObject.GetComponent<SpriteManager>();
@@ -278,9 +276,6 @@ public class InputManager : MonoBehaviour
         }
         if (GameState == GameStates.Play)
         {
-            Log.text = "collidingObject: " + collidingObject;
-            Log.text += "\nspriteManager: " + spriteManager;
-            Log.text += "\nreferencePlane: " + referencePlane;
             if (spriteManager != null)
             {
                 if (buttonOne)

@@ -234,13 +234,12 @@ public class GameManager : MonoBehaviour
     public Material[] Colors;
     public void OnCellClicked(int x, int y)
     {
-        Log.text += "\nOnCellClicked " + x + "," + y;
         if (InSpellMode)
         {
             var actions = new List<IAvailableAction>();
             actions.Add(new ConfirmSpellAction(Battle.GetCreatureInTurn().Id, spell)
             {
-                Target = map.GetCellInfo(y, x)
+                Target = Battle.Map.GetCellInfo(y, x)
             }); ;
             actions.Add(new CancelSpellAction());
             ActionsManager.SetActions(actions);
@@ -248,10 +247,14 @@ public class GameManager : MonoBehaviour
 
         if (InAttackMode)
         {
-            var creature = map.GetOccupantCreature(y, x);
+            Log.text = "Parsing attack\n";
+            Log.text = "map " + Battle.Map + "\n";
+            var creature = Battle.Map.GetOccupantCreature(y, x);
+            Log.text += "Creature in that cell: " + creature + "\n";
             if (creature != null)
             {
                 var actions = new List<IAvailableAction>();
+                Log.text += "Creating confirm attack action\n";
                 actions.Add(new ConfirmAttackAction()
                 {
                     TargetCreature = creature.Id,
@@ -265,7 +268,6 @@ public class GameManager : MonoBehaviour
         }
         if (InMovementMode && NextMovementAvailableCells.Any(edge => edge.Destination.X == y && edge.Destination.Y == x))
         {
-            Log.text += "\nInMovementMode";
             //check if there are multiple paths
             var ends = NextMovementAvailableCells.Where(edge => edge.Destination.X == y && edge.Destination.Y == x).OrderBy(x => x.Damage).ToList();
             var actions = new List<IAvailableAction>();

@@ -2235,6 +2235,7 @@ MonoBehaviour:
   SelectionTile: {fileID: 5347009842753814457, guid: aaedee31836b14ece88f551b3ee6fa2d, type: 3}
   MapRoot: {fileID: 465368468}
   Ball: {fileID: 5711673698707387533, guid: fd0711a3313cc4f548e29d18815c0dd3, type: 3}
+  GreenBall: {fileID: 5711673698707387533, guid: bbd46ea1b782d41c886ccb194fbe4afc, type: 3}
   InitiativeIndicator: {fileID: 595461108}
   Log: {fileID: 516356241}
   GameManager: {fileID: 904559458}
@@ -2382,7 +2383,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190335
-  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 1, g: 0, b: 0, a: 0}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5636,7 +5637,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh139238
+  m_Name: pb_Mesh67918
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
