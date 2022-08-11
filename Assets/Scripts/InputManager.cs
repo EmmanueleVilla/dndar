@@ -100,6 +100,7 @@ public class InputManager : MonoBehaviour
             return;
         }
 
+
         var inputDevice = GetInputDevice();
         var buttonOne = OVRInput.Get(OVRInput.Button.One);
         var buttonTwo = OVRInput.Get(OVRInput.Button.Two);
@@ -121,6 +122,8 @@ public class InputManager : MonoBehaviour
         inputDevice.TryGetFeatureValue(OculusUsages.thumbTouch, out bool thumbTouching);
         inputDevice.TryGetFeatureValue(CommonUsages.gripButton, out bool gripTouching);
 
+        
+
         if (Time.realtimeSinceStartup - lastHit > debounce)
         {
             debouncing = false;
@@ -129,6 +132,11 @@ public class InputManager : MonoBehaviour
         if (debouncing)
         {
             return;
+        }
+
+        if (GameState == GameStates.Create && SelectedTile == TileTypes.None && indexTrigger > 0.9f && handTrigger > 0.9f && gripTouching) {
+            debouncing = true;
+            Save();
         }
 
         RaycastHit hit;
@@ -144,6 +152,8 @@ public class InputManager : MonoBehaviour
         }
 
         var collides = Physics.Raycast(rayAnchor.position, rayAnchor.forward, out hit, 50.0f, mask);
+        
+
         if (!collides)
         {
             return;
@@ -162,11 +172,6 @@ public class InputManager : MonoBehaviour
             {
                 Destroy(selectedTilePrefab);
                 SelectedTile = TileTypes.None;
-            }
-
-            if (SelectedTile == TileTypes.None && indexTrigger > 0.9f && handTrigger > 0.9f && gripTouching)
-            {
-                Save();
             }
 
             var selectionTile = collidingObject.GetComponent<SelectionTile>();
@@ -301,6 +306,7 @@ public class InputManager : MonoBehaviour
 
     IMap Save()
     {
+        Log.text = "Saving...\n";
         var children = MapManager.GetComponentsInChildren<TileManager>();
         var saveFile = new StringBuilder();
         ArrayDndMap map = new ArrayDndMap(42, 42, new CellInfo(' ', 0));
@@ -382,7 +388,7 @@ public class InputManager : MonoBehaviour
             }
         }
 
-        Log.text = "";
+        
 
         foreach (var tile in children)
         {
@@ -401,11 +407,11 @@ public class InputManager : MonoBehaviour
                 }
             }
         }
-        //Log.text += "\n<mspace=0.75em>Begin map\n";
+        Log.text = "\n<mspace=0.75em>Begin map\n";
 
         for (int j = 41; j >= 0; j--)
         {
-            //Log.text += j.ToString("D2");
+            Log.text += j.ToString("D2");
 
             for (int i = 0; i < 42; i++)
             {
@@ -423,9 +429,9 @@ public class InputManager : MonoBehaviour
                 {
                     c = "$" + map.GetCellInfo(i, j).Height.ToString("D2");
                 }
-                //Log.text += c;
+                Log.text += c;
             }
-            //Log.text += "\n";
+            Log.text += "\n";
         }
         PlayerPrefs.SetString("saved_map", saveFile.ToString());
         return map;
