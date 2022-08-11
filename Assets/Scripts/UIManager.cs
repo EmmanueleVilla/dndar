@@ -43,6 +43,7 @@ public class UIManager : MonoBehaviour
     public GameObject SelectionTile;
     public GameObject MapRoot;
     public GameObject Ball;
+    public GameObject GreenBall;
     public GameObject InitiativeIndicator;
 
     public TextMeshProUGUI Log;
@@ -90,7 +91,7 @@ public class UIManager : MonoBehaviour
                     delta += 0.0035f;
                 }
                 go.transform.localPosition = new Vector3(0.5f + 0.0125f - cell.X * 0.025f, ((int)cell.Height) * 0.01f + 0.0016f + delta, 0.5f + 0.0125f - cell.Y * 0.025f);
-                go.transform.GetComponent<MeshCollider>().enabled = false;
+                //go.transform.GetComponent<MeshCollider>().enabled = false;
                 var sprite = go.transform.GetComponent<SpriteManager>();
                 sprite.X = x;
                 sprite.Y = y;
@@ -100,9 +101,19 @@ public class UIManager : MonoBehaviour
         InitiativeIndicator.transform.localScale = new Vector3(0.05f, -0.1f, 0.05f);
     }
 
+    internal void HighlightCells(List<CellInfo> reachableCells)
+    {
+        foreach (var tile in tiles)
+        {
+            if (reachableCells.Any(res => res.X == tile.Y && res.Y == tile.X))
+            {
+                tile.transform.localScale = Vector3.one * 0.0025f;
+            }
+        }
+    }
+
     internal void HighlightMovement(List<MemoryEdge> result)
     {
-        Log.text += "\nHighlightMovement";
         foreach (var tile in tiles)
         {
             if (result.Any(res => res.Destination.X == tile.Y && res.Destination.Y == tile.X && res.Speed > 0))
@@ -114,7 +125,6 @@ public class UIManager : MonoBehaviour
 
     internal void ResetCellsUI()
     {
-        Log.text += "\nResetCellsUI from " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
         foreach (var tile in tiles)
         {
             tile.transform.localScale = Vector3.zero;
@@ -155,48 +165,40 @@ public class UIManager : MonoBehaviour
                         yield return StartCoroutine(Move(ball, start.transform.localPosition + new Vector3(0f, 0.01f, 0f), target.transform.localPosition + new Vector3(0f, 0.01f, 0f), 1.0f));
                         Destroy(ball);
                     }
-                    //var obj = Instantiate(HitPrefab);
-                    //obj.transform.localPosition = target.transform.localPosition;
                 }
-                /*
                 if (eve.Type == GameEvent.Types.Falling)
                 {
-                    var renderers = creatureInTurn.GetComponentsInChildren<SpriteRenderer>().ToList();
-                    yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.red));
+                    GameObject ball = Instantiate(Ball);
+                    ball.transform.parent = creatureInTurn.gameObject.transform.parent;
+                    yield return StartCoroutine(Move(ball,
+                    creatureInTurn.gameObject.transform.localPosition + new Vector3(0f, 0.01f, 0f),
+                    creatureInTurn.gameObject.transform.localPosition + new Vector3(0f, 0.03f, 0f), 1.0f));
+                    Destroy(ball);
                 }
 
                 if (eve.Type == GameEvent.Types.SelfAbility)
                 {
-                    var renderers = creatureInTurn.GetComponentsInChildren<SpriteRenderer>().ToList();
-                    yield return StartCoroutine(ColorEffect(renderers, 0.25f, Color.green));
+                    GameObject ball = Instantiate(GreenBall);
+                    ball.transform.parent = creatureInTurn.gameObject.transform.parent;
+                    yield return StartCoroutine(Move(ball,
+                    creatureInTurn.gameObject.transform.localPosition + new Vector3(0f, 0.01f, 0f),
+                    creatureInTurn.gameObject.transform.localPosition + new Vector3(0f, 0.03f, 0f), 1.0f));
+                    Destroy(ball);
                 }
 
                 if (eve.Type == GameEvent.Types.AttackMissed)
                 {
-                    GameObject target = null;
-                    GameObject start = null;
-                    GameObject ball = Instantiate(Ball);
-                    foreach (var indicator in initiativeIndicators)
+                    GameObject target = creatures.FirstOrDefault(x => x.Creature.Id == eve.Attacked).gameObject;
+                    GameObject start = creatures.FirstOrDefault(x => x.Creature.Id == eve.Attacker).gameObject;
+                    if (start != null && target != null)
                     {
-                        if (indicator.Item1 == eve.Attacker)
-                        {
-                            start = indicator.Item2.gameObject;
-                        }
-                        if (indicator.Item1 == eve.Attacked)
-                        {
-                            target = indicator.Item2.gameObject;
-                        }
+                        GameObject ball = Instantiate(Ball);
+                        ball.transform.parent = start.transform.parent;
+                        yield return StartCoroutine(Move(ball, start.transform.localPosition + new Vector3(0f, 0.01f, 0f), target.transform.localPosition + new Vector3(0f, 0.01f, 0f), 1.0f));
+                        yield return StartCoroutine(Move(ball, target.transform.localPosition + new Vector3(0f, 0.01f, 0f), target.transform.localPosition + new Vector3(0f, 0.03f, 0f), 1.0f));
+                        Destroy(ball);
                     }
-                    ball.transform.parent = start.transform.parent;
-                    Miss.transform.position = target.transform.position;
-                    Miss.transform.position += Vector3.up * 8;
-                    yield return StartCoroutine(Move(ball, start.transform.localPosition + Vector3.up * 5, target.transform.localPosition + Vector3.up * 5, 1.0f));
-                    Destroy(ball);
-                    Miss.SetActive(true);
-                    yield return new WaitForSeconds(0.5f);
-                    Miss.SetActive(false);
                 }
-                */
                 yield return null;
             }
         }

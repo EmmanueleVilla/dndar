@@ -140,17 +140,19 @@ public class InputManager : MonoBehaviour
 
         if (GameState == GameStates.Play)
         {
-            mask = LayerMask.GetMask("InputTile");
+            mask = LayerMask.GetMask("Default", "Plane", "InputTile");
         }
 
         var collides = Physics.Raycast(rayAnchor.position, rayAnchor.forward, out hit, 50.0f, mask);
         if (!collides)
         {
+            Log.text = "Don't collide";
             return;
         }
 
         var collidingPoint = hit.point;
         var collidingObject = hit.transform.gameObject;
+        Log.text = "Collides with " + hit.transform.gameObject;
 
         var referencePlane = collidingObject.GetComponent<ReferencePlaneCollider>();
         var spriteManager = collidingObject.GetComponent<SpriteManager>();

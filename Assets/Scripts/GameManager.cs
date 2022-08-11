@@ -55,6 +55,27 @@ public class GameManager : MonoBehaviour
         StartTurn();
     }
 
+    public IEnumerator ConfirmMovement(int destinationX, int destinationY, int damage, int speed)
+    {
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        var end = NextMovementAvailableCells.First(edge =>
+            edge.Destination.X == destinationX
+            && edge.Destination.Y == destinationY
+            && edge.CanEndMovementHere == true
+            && edge.Damage == damage
+            && edge.Speed == speed
+            );
+        var GameEvents = Battle.MoveTo(end);
+        yield return StartCoroutine(UIManager.ShowGameEvents(GameEvents));
+        ExitMovementMode();
+    }
+
+    public void NextTurn()
+    {
+        Battle.NextTurn();
+        StartTurn();
+    }
+
     private void StartTurn()
     {
         var creature = Battle.GetCreatureInTurn();
@@ -107,7 +128,81 @@ public class GameManager : MonoBehaviour
         StartTurn();
     }
 
+    #region SPELLS
+
+    bool InSpellMode = false;
+    ISpell spell = null;
+    public void EnterSpellMode(RequestSpellAction action)
+    {
+        InSpellMode = true;
+        spell = action.Spell;
+        ActionsManager.SetActions(
+            new List<IAvailableAction>() {
+                new CancelSpellAction()
+            });
+        UIManager.HighlightCells(action.ReachableCells);
+    }
+
+    internal void ExitSpellMode()
+    {
+        InSpellMode = false;
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        this.StartCoroutine(SetAvailableActions());
+        UIManager.ResetCellsUI();
+    }
+
+    internal IEnumerator ConfirmSpell(ConfirmSpellAction confirmSpellAction)
+    {
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        var events = Battle.Spell(confirmSpellAction);
+        yield return this.StartCoroutine(UIManager.ShowGameEvents(events));
+        ExitSpellMode();
+    }
+
+    #endregion
+
+    #region ATTACK
+    bool InAttackMode = false;
+    RequestAttackAction requestedAttack;
+
+    public void EnterAttackMode(RequestAttackAction action)
+    {
+        InAttackMode = true;
+        requestedAttack = action;
+        ActionsManager.SetActions(
+            new List<IAvailableAction>()
+            {
+                new CancelAttackAction()
+            });
+        UIManager.HighlightCells(action.ReachableCells);
+    }
+
+    public void ExitAttackMode()
+    {
+        InAttackMode = false;
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        this.StartCoroutine(SetAvailableActions());
+        UIManager.ResetCellsUI();
+    }
+
+    internal IEnumerator ConfirmAttack(ConfirmAttackAction confirmAttackAction)
+    {
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        var events = Battle.Attack(confirmAttackAction);
+        yield return this.StartCoroutine(UIManager.ShowGameEvents(events));
+        ExitAttackMode();
+    }
+
+    #endregion
+
     #region MOVEMENT
+
+    internal void UseAbility(IAvailableAction availableAction)
+    {
+        Battle.UseAbility(availableAction);
+        ActionsManager.SetActions(new List<IAvailableAction>());
+        this.StartCoroutine(SetAvailableActions());
+    }
     bool InMovementMode = false;
     public void EnterMovementMode()
     {
@@ -140,7 +235,6 @@ public class GameManager : MonoBehaviour
     public void OnCellClicked(int x, int y)
     {
         Log.text += "\nOnCellClicked " + x + "," + y;
-        /*
         if (InSpellMode)
         {
             var actions = new List<IAvailableAction>();
@@ -169,7 +263,6 @@ public class GameManager : MonoBehaviour
                 ActionsManager.SetActions(actions);
             }
         }
-        */
         if (InMovementMode && NextMovementAvailableCells.Any(edge => edge.Destination.X == y && edge.Destination.Y == x))
         {
             Log.text += "\nInMovementMode";

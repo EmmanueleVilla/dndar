@@ -89,32 +89,32 @@ public class ActionsManager : MonoBehaviour
                 break;
             case ActionsTypes.ConfirmMovement:
                 var action = Actions[index] as ConfirmMovementAction;
-                //this.StartCoroutine(GameManager.ConfirmMovement(action.DestinationX, action.DestinationY, action.Damage, action.Speed));
+                this.StartCoroutine(GameManager.ConfirmMovement(action.DestinationX, action.DestinationY, action.Damage, action.Speed));
                 break;
             case ActionsTypes.EndTurn:
-                //GameManager.NextTurn();
+                GameManager.NextTurn();
                 break;
             case ActionsTypes.RequestAttack:
-                //GameManager.EnterAttackMode(Actions[index] as RequestAttackAction);
+                GameManager.EnterAttackMode(Actions[index] as RequestAttackAction);
                 break;
             case ActionsTypes.CancelAttack:
-                //GameManager.ExitAttackMode();
+                GameManager.ExitAttackMode();
                 break;
             case ActionsTypes.ConfirmAttack:
                 var confirmAttackAction = Actions[index] as ConfirmAttackAction;
-                //this.StartCoroutine(GameManager.ConfirmAttack(confirmAttackAction));
+                this.StartCoroutine(GameManager.ConfirmAttack(confirmAttackAction));
                 break;
             case ActionsTypes.RequestSpell:
-                //GameManager.EnterSpellMode(Actions[index] as RequestSpellAction);
+                GameManager.EnterSpellMode(Actions[index] as RequestSpellAction);
                 break;
             case ActionsTypes.ConfirmSpell:
-                //this.StartCoroutine(GameManager.ConfirmSpell(Actions[index] as ConfirmSpellAction));
+                this.StartCoroutine(GameManager.ConfirmSpell(Actions[index] as ConfirmSpellAction));
                 break;
             case ActionsTypes.CancelSpell:
-                //GameManager.ExitSpellMode();
+                GameManager.ExitSpellMode();
                 break;
             default:
-                //GameManager.UseAbility(Actions[index]);
+                GameManager.UseAbility(Actions[index]);
                 break;
         }
     }
