@@ -114,7 +114,7 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void GoToPlay()
+    private void InitPlay()
     {
         ResetMap();
         Play.SetActive(true);
@@ -124,7 +124,18 @@ public class MenuManager : MonoBehaviour
         Create.SetActive(false);
         ReferencePlane.SetActive(true);
         InputManager.Load();
-        this.StartCoroutine(GameManager.StartGame(InputManager.GetMap()));
+    }
+
+    public void GoToPlayAuto()
+    {
+        InitPlay();
+        this.StartCoroutine(GameManager.StartGame(InputManager.GetMap(), true));
+    }
+    
+    public void GoToPlayManual()
+    {
+        InitPlay();
+        this.StartCoroutine(GameManager.StartGame(InputManager.GetMap(), false));
     }
 
     public void GoToMainMenu()

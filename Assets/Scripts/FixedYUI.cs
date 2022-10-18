@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[ExecuteInEditMode]
 public class FixedYUI : MonoBehaviour
 {
+    public Transform player;
 
-    public int Z = 1;
     void Update()
     {
-        this.transform.position = new Vector3(this.transform.position.x, 0, this.transform.position.z);
+        var me = transform;
+        me.position = player.position + player.forward * 1.5f;
+        me.localEulerAngles = player.localEulerAngles;
     }
 }

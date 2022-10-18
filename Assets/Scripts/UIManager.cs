@@ -1,42 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
-using Unity.XR.Oculus;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.XR;
-using static TileManager;
-using System;
-using System.Text;
-using Logic.Core.Map.Impl;
+using System.Text.RegularExpressions;
 using DndCore.Map;
-using Logic.Core.Creatures;
-using Logic.Core.Creatures.Bestiary;
-using DndCore.DI;
-using DndCore.Map;
-using DndCore.Utils.Log;
-using Logic.Core.Actions;
 using Logic.Core.Battle;
-using Logic.Core.Battle.Actions;
-using Logic.Core.Battle.Actions.Attacks;
-using Logic.Core.Battle.Actions.Movement;
-using Logic.Core.Battle.Actions.Spells;
-using Logic.Core.Creatures;
-using Logic.Core.Creatures.Abilities.Spells;
-using Logic.Core.Creatures.Bestiary;
 using Logic.Core.Graph;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Unity.Collections;
-using Unity.Jobs;
+using TMPro;
 using UnityEngine;
-using Assets.Scripts.Jobs;
-using System.Diagnostics;
-
 
 public class UIManager : MonoBehaviour
 {
@@ -50,6 +20,8 @@ public class UIManager : MonoBehaviour
 
     List<SpriteManager> tiles = new List<SpriteManager>();
     public GameManager GameManager;
+    public TextMeshPro Feedback;
+    public Transform player;
 
     public void ResetUI()
     {
@@ -70,6 +42,7 @@ public class UIManager : MonoBehaviour
                 {
                     continue;
                 }
+
                 GameObject go = Instantiate(SelectionTile);
                 go.transform.parent = MapRoot.transform;
                 go.transform.localScale = Vector3.zero;
@@ -78,19 +51,24 @@ public class UIManager : MonoBehaviour
                 {
                     delta -= 0.0045f;
                 }
+
                 if ((((int)cell.Height) % 5) == 2)
                 {
                     delta -= 0.0043f;
                 }
+
                 if ((((int)cell.Height) % 5) == 3)
                 {
                     delta -= 0.00155f;
                 }
+
                 if ((((int)cell.Height) % 5) == 4)
                 {
                     delta += 0.0035f;
                 }
-                go.transform.localPosition = new Vector3(0.5f + 0.0125f - cell.X * 0.025f, ((int)cell.Height) * 0.01f + 0.0016f + delta, 0.5f + 0.0125f - cell.Y * 0.025f);
+
+                go.transform.localPosition = new Vector3(0.5f + 0.0125f - cell.X * 0.025f,
+                    ((int)cell.Height) * 0.01f + 0.0016f + delta, 0.5f + 0.0125f - cell.Y * 0.025f);
                 //go.transform.GetComponent<MeshCollider>().enabled = false;
                 var sprite = go.transform.GetComponent<SpriteManager>();
                 sprite.X = x;
@@ -98,6 +76,7 @@ public class UIManager : MonoBehaviour
                 tiles.Add(sprite);
             }
         }
+
         InitiativeIndicator.transform.localScale = new Vector3(0.05f, -0.1f, 0.05f);
     }
 
@@ -134,10 +113,7 @@ public class UIManager : MonoBehaviour
     internal IEnumerator ShowGameEvents(List<GameEvent> events)
     {
         var gos = GameObject.FindGameObjectsWithTag("Creature");
-        var creatures = gos.Select(x =>
-        {
-            return x.GetComponent<CharacterQuantization>();
-        });
+        var creatures = gos.Select(x => { return x.GetComponent<CharacterQuantization>(); });
         var creatureInTurn = creatures.FirstOrDefault(x => x.Creature.Id == GameManager.Battle.GetCreatureInTurn().Id);
         if (events != null)
         {
@@ -151,7 +127,7 @@ public class UIManager : MonoBehaviour
                         creatureInTurn.gameObject.transform.localPosition,
                         target,
                         0.25f
-                        ));
+                    ));
                 }
 
                 if (eve.Type == GameEvent.Types.Attacks || eve.Type == GameEvent.Types.Spell)
@@ -162,28 +138,28 @@ public class UIManager : MonoBehaviour
                     {
                         GameObject ball = Instantiate(Ball);
                         ball.transform.parent = start.transform.parent;
-                        yield return StartCoroutine(Move(ball, start.transform.localPosition + new Vector3(0f, 0.01f, 0f), target.transform.localPosition + new Vector3(0f, 0.01f, 0f), 1.0f));
+                        yield return StartCoroutine(Move(ball,
+                            start.transform.localPosition + new Vector3(0f, 0.01f, 0f),
+                            target.transform.localPosition + new Vector3(0f, 0.01f, 0f), 1.0f));
+                        yield return StartCoroutine(ShowText(target, "-" + eve.Damage, 1.0f));
                         Destroy(ball);
                     }
                 }
+
                 if (eve.Type == GameEvent.Types.Falling)
                 {
                     GameObject ball = Instantiate(Ball);
                     ball.transform.parent = creatureInTurn.gameObject.transform.parent;
                     yield return StartCoroutine(Move(ball,
-                    creatureInTurn.gameObject.transform.localPosition + new Vector3(0f, 0.01f, 0f),
-                    creatureInTurn.gameObject.transform.localPosition + new Vector3(0f, 0.03f, 0f), 1.0f));
+                        creatureInTurn.gameObject.transform.localPosition + new Vector3(0f, 0.01f, 0f),
+                        creatureInTurn.gameObject.transform.localPosition + new Vector3(0f, 0.03f, 0f), 1.0f));
+                    yield return StartCoroutine(ShowText(creatureInTurn.gameObject, "-" + eve.Damage, 1.0f));
                     Destroy(ball);
                 }
 
                 if (eve.Type == GameEvent.Types.SelfAbility)
                 {
-                    GameObject ball = Instantiate(GreenBall);
-                    ball.transform.parent = creatureInTurn.gameObject.transform.parent;
-                    yield return StartCoroutine(Move(ball,
-                    creatureInTurn.gameObject.transform.localPosition + new Vector3(0f, 0.01f, 0f),
-                    creatureInTurn.gameObject.transform.localPosition + new Vector3(0f, 0.03f, 0f), 1.0f));
-                    Destroy(ball);
+                    yield return StartCoroutine(ShowText(creatureInTurn.gameObject, eve.Ability, 1.0f));
                 }
 
                 if (eve.Type == GameEvent.Types.AttackMissed)
@@ -194,11 +170,14 @@ public class UIManager : MonoBehaviour
                     {
                         GameObject ball = Instantiate(Ball);
                         ball.transform.parent = start.transform.parent;
-                        yield return StartCoroutine(Move(ball, start.transform.localPosition + new Vector3(0f, 0.01f, 0f), target.transform.localPosition + new Vector3(0f, 0.01f, 0f), 1.0f));
-                        yield return StartCoroutine(Move(ball, target.transform.localPosition + new Vector3(0f, 0.01f, 0f), target.transform.localPosition + new Vector3(0f, 0.03f, 0f), 1.0f));
+                        yield return StartCoroutine(Move(ball,
+                            start.transform.localPosition + new Vector3(0f, 0.01f, 0f),
+                            target.transform.localPosition + new Vector3(0f, 0.01f, 0f), 1.0f));
+                        yield return StartCoroutine(ShowText(target, "MISS", 1.0f));
                         Destroy(ball);
                     }
                 }
+
                 yield return null;
             }
         }
@@ -213,6 +192,24 @@ public class UIManager : MonoBehaviour
             go.transform.localPosition = newPos;
             yield return null;
         }
+    }
+
+    private IEnumerator ShowText(GameObject target, string text, float time)
+    {
+        Feedback.transform.eulerAngles = player.eulerAngles;
+        Feedback.transform.parent = target.transform;
+        Feedback.transform.localPosition = Vector3.up * 0.05f;
+        Feedback.text = Regex.Replace(text, "(\\B[A-Z])", " $1");
+        var now = Time.realtimeSinceStartup;
+        Feedback.alpha = 0.0f;
+        while (Time.realtimeSinceStartup - now < time)
+        {
+            var newAlpha = (Time.realtimeSinceStartup - now) / time;
+            Feedback.alpha = newAlpha;
+            yield return null;
+        }
+
+        Feedback.alpha = 0.0f;
     }
 
     private IEnumerator Move(GameObject go, Vector3 start, Vector3 end, float time)
@@ -232,32 +229,36 @@ public class UIManager : MonoBehaviour
         {
             return;
         }
+
         var inTurn = GameManager.Battle.GetCreatureInTurn();
         if (inTurn == null)
         {
             return;
         }
+
         var gos = GameObject.FindGameObjectsWithTag("Creature");
         if (gos == null || gos.Count() == 0)
         {
             return;
         }
-        var creatures = gos.Select(x =>
-        {
-            return x?.GetComponent<CharacterQuantization>();
-        }).Where(x => x != null);
-        var creatureInTurn = creatures.FirstOrDefault(x => x != null && x.Creature != null && x.Creature.Id == inTurn.Id);
+
+        var creatures = gos.Select(x => { return x?.GetComponent<CharacterQuantization>(); }).Where(x => x != null);
+        var creatureInTurn =
+            creatures.FirstOrDefault(x => x != null && x.Creature != null && x.Creature.Id == inTurn.Id);
         if (creatureInTurn != null)
         {
-            InitiativeIndicator.transform.localPosition = creatureInTurn.transform.localPosition + new Vector3(0f, 0.05f, 0f);
+            InitiativeIndicator.transform.localPosition =
+                creatureInTurn.transform.localPosition + new Vector3(0f, 0.05f, 0f);
         }
     }
+
     internal void ShowPath(List<CellInfo> cellPath, MemoryEdge end, Material color)
     {
         Log.text += "\nShowPath";
         foreach (var tile in tiles)
         {
-            if (cellPath.Any(res => res.X == tile.Y && res.Y == tile.X) || (end.Destination.X == tile.Y && end.Destination.Y == tile.X))
+            if (cellPath.Any(res => res.X == tile.Y && res.Y == tile.X) ||
+                (end.Destination.X == tile.Y && end.Destination.Y == tile.X))
             {
                 tile.Knob.gameObject.SetActive(true);
                 tile.Knob.material = color;

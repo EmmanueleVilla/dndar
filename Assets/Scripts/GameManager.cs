@@ -1,22 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using TMPro;
-using Unity.XR.Oculus;
-using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.XR;
-using static TileManager;
-using System;
 using System.Text;
-using Logic.Core.Map.Impl;
-using DndCore.Map;
-using Logic.Core.Creatures;
-using Logic.Core.Creatures.Bestiary;
+using Assets.Scripts.Jobs;
 using DndCore.DI;
 using DndCore.Map;
-using DndCore.Utils.Log;
-using Logic.Core.Actions;
 using Logic.Core.Battle;
 using Logic.Core.Battle.Actions;
 using Logic.Core.Battle.Actions.Attacks;
@@ -24,18 +14,10 @@ using Logic.Core.Battle.Actions.Movement;
 using Logic.Core.Battle.Actions.Spells;
 using Logic.Core.Creatures;
 using Logic.Core.Creatures.Abilities.Spells;
-using Logic.Core.Creatures.Bestiary;
 using Logic.Core.Graph;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Unity.Collections;
+using TMPro;
 using Unity.Jobs;
 using UnityEngine;
-using Assets.Scripts.Jobs;
-using System.Diagnostics;
 
 public class GameManager : MonoBehaviour
 {
@@ -45,8 +27,44 @@ public class GameManager : MonoBehaviour
     public IMap map;
     private List<int> Initiatives;
     TextMeshProUGUI Log;
-    public IEnumerator StartGame(IMap map)
+    public TextMeshProUGUI Creatures;
+
+    private bool _onlyAI;
+
+    private void Update()
     {
+        var battle = DndModule.Get<IDndBattle>();
+        var creatureInTurn = battle.GetCreatureInTurn();
+
+        var builder = new StringBuilder();
+        if (Initiatives != null)
+        {
+            foreach (var creatureId in Initiatives)
+            {
+                try
+                {
+                    if (creatureInTurn.Id == creatureId)
+                    {
+                        builder.Append("> ");
+                    }
+
+                    var creature = battle.GetCreatureById(creatureId);
+                    builder.Append(creature.GetType().ToString().Split('.').Last());
+                    builder.AppendLine(
+                        $" {creature.CurrentHitPoints}/{creature.HitPoints} + {creature.TemporaryHitPoints}");
+                }
+                catch (Exception e)
+                {
+                }
+            }
+        }
+
+        Creatures.text = builder.ToString();
+    }
+
+    public IEnumerator StartGame(IMap map, bool onlyAI)
+    {
+        _onlyAI = onlyAI;
         Log = GameObject.FindGameObjectsWithTag("Log")[0].GetComponent<TextMeshProUGUI>();
         //Log.text += "\nSTART GAME";
         Battle = DndModule.Get<IDndBattle>();
@@ -64,7 +82,7 @@ public class GameManager : MonoBehaviour
             && edge.CanEndMovementHere == true
             && edge.Damage == damage
             && edge.Speed == speed
-            );
+        );
         var GameEvents = Battle.MoveTo(end);
         yield return StartCoroutine(UIManager.ShowGameEvents(GameEvents));
         ExitMovementMode();
@@ -80,7 +98,7 @@ public class GameManager : MonoBehaviour
     {
         var creature = Battle.GetCreatureInTurn();
         ActionsManager.SetActions(new List<IAvailableAction>());
-        if (creature.Loyalty == Loyalties.Ally)
+        if (creature.Loyalty == Loyalties.Ally && !_onlyAI)
         {
             this.StartCoroutine(SetAvailableActions());
         }
@@ -132,12 +150,14 @@ public class GameManager : MonoBehaviour
 
     bool InSpellMode = false;
     ISpell spell = null;
+
     public void EnterSpellMode(RequestSpellAction action)
     {
         InSpellMode = true;
         spell = action.Spell;
         ActionsManager.SetActions(
-            new List<IAvailableAction>() {
+            new List<IAvailableAction>()
+            {
                 new CancelSpellAction()
             });
         UIManager.HighlightCells(action.ReachableCells);
@@ -162,6 +182,7 @@ public class GameManager : MonoBehaviour
     #endregion
 
     #region ATTACK
+
     bool InAttackMode = false;
     RequestAttackAction requestedAttack;
 
@@ -203,35 +224,43 @@ public class GameManager : MonoBehaviour
         ActionsManager.SetActions(new List<IAvailableAction>());
         this.StartCoroutine(SetAvailableActions());
     }
+
     bool InMovementMode = false;
+
     public void EnterMovementMode()
     {
         InMovementMode = true;
         ActionsManager.SetActions(
-            new List<IAvailableAction>() {
+            new List<IAvailableAction>()
+            {
                 new CancelMovementAction()
             });
         StartMovementMode();
     }
+
     List<MemoryEdge> NextMovementAvailableCells = new List<MemoryEdge>();
+
     void StartMovementMode()
     {
-        NextMovementAvailableCells = Battle.GetReachableCells().Where(x => x.Speed > 0 && x.CanEndMovementHere).ToList();
+        NextMovementAvailableCells =
+            Battle.GetReachableCells().Where(x => x.Speed > 0 && x.CanEndMovementHere).ToList();
         UIManager.HighlightMovement(NextMovementAvailableCells);
     }
 
     public void ExitMovementMode()
     {
-        Log.text += "\nExitMovementMode from " + (new System.Diagnostics.StackTrace()).GetFrame(1).GetMethod().Name;
+        Log.text += "\nExitMovementMode from " + (new StackTrace()).GetFrame(1).GetMethod().Name;
         InMovementMode = false;
         ActionsManager.SetActions(new List<IAvailableAction>());
         this.StartCoroutine(SetAvailableActions());
         UIManager.ResetCellsUI();
         NextMovementAvailableCells.Clear();
     }
+
     #endregion
 
     public Material[] Colors;
+
     public void OnCellClicked(int x, int y)
     {
         if (InSpellMode)
@@ -240,7 +269,8 @@ public class GameManager : MonoBehaviour
             actions.Add(new ConfirmSpellAction(Battle.GetCreatureInTurn().Id, spell)
             {
                 Target = Battle.Map.GetCellInfo(y, x)
-            }); ;
+            });
+            ;
             actions.Add(new CancelSpellAction());
             ActionsManager.SetActions(actions);
         }
@@ -266,10 +296,13 @@ public class GameManager : MonoBehaviour
                 ActionsManager.SetActions(actions);
             }
         }
-        if (InMovementMode && NextMovementAvailableCells.Any(edge => edge.Destination.X == y && edge.Destination.Y == x))
+
+        if (InMovementMode &&
+            NextMovementAvailableCells.Any(edge => edge.Destination.X == y && edge.Destination.Y == x))
         {
             //check if there are multiple paths
-            var ends = NextMovementAvailableCells.Where(edge => edge.Destination.X == y && edge.Destination.Y == x).OrderBy(x => x.Damage).ToList();
+            var ends = NextMovementAvailableCells.Where(edge => edge.Destination.X == y && edge.Destination.Y == x)
+                .OrderBy(x => x.Damage).ToList();
             var actions = new List<IAvailableAction>();
             UIManager.ResetCellsUI();
             UIManager.HighlightMovement(NextMovementAvailableCells);
@@ -277,13 +310,18 @@ public class GameManager : MonoBehaviour
             foreach (var end in ends)
             {
                 UIManager.ShowPath(Battle.GetPathTo(end), end, Colors[index]);
-                actions.Add(new ConfirmMovementAction() { Damage = end.Damage, DestinationX = end.Destination.X, DestinationY = end.Destination.Y, Speed = end.Speed });
+                actions.Add(new ConfirmMovementAction()
+                {
+                    Damage = end.Damage, DestinationX = end.Destination.X, DestinationY = end.Destination.Y,
+                    Speed = end.Speed
+                });
                 index++;
                 if (index == Colors.Count())
                 {
                     index = 0;
                 }
             }
+
             actions.Add(new CancelMovementAction());
             ActionsManager.SetActions(actions);
         }
