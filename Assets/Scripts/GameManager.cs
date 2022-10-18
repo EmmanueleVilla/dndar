@@ -22,6 +22,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public ActionsManager ActionsManager;
+    public MenuManager MenuManager;
     public UIManager UIManager;
     public IDndBattle Battle;
     public IMap map;
@@ -98,13 +99,20 @@ public class GameManager : MonoBehaviour
     {
         var creature = Battle.GetCreatureInTurn();
         ActionsManager.SetActions(new List<IAvailableAction>());
-        if (creature.Loyalty == Loyalties.Ally && !_onlyAI)
+        if (Battle.Map.Creatures.All(x => x.Value.Loyalty == Battle.Map.Creatures.First().Value.Loyalty))
         {
-            this.StartCoroutine(SetAvailableActions());
+            MenuManager.ShowWinner(Battle.Map.Creatures.First().Value.Loyalty);
         }
         else
         {
-            this.StartCoroutine(AIPlay());
+            if (creature.Loyalty == Loyalties.Ally && !_onlyAI)
+            {
+                this.StartCoroutine(SetAvailableActions());
+            }
+            else
+            {
+                this.StartCoroutine(AIPlay());
+            }
         }
     }
 

@@ -3984,6 +3984,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ActionsManager: {fileID: 904559459}
+  MenuManager: {fileID: 1922019917}
   UIManager: {fileID: 465368471}
   Creatures: {fileID: 1481049291}
   Colors:

@@ -1,13 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Logic.Core.Creatures;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using static InputManager;
 using static TileManager;
-using static UnityEngine.UI.Dropdown;
 
 public class MenuManager : MonoBehaviour
 {
@@ -66,8 +64,9 @@ public class MenuManager : MonoBehaviour
         int y = startY;
         foreach (Transform child in TilesRoot.transform)
         {
-            GameObject.Destroy(child.gameObject);
+            Destroy(child.gameObject);
         }
+
         foreach (var tile in selectedTiles.Tiles)
         {
             var go = Instantiate(tile.Prefab);
@@ -77,6 +76,7 @@ public class MenuManager : MonoBehaviour
                 collider.gameObject.AddComponent<SelectionTile>();
                 collider.enabled = false;
             }
+
             go.transform.parent = TilesRoot.transform;
             go.transform.localPosition = new Vector3(x, y, -15);
             go.transform.localScale = new Vector3(250, 250, 250);
@@ -90,6 +90,7 @@ public class MenuManager : MonoBehaviour
             }
         }
     }
+
     public void GoToSettings()
     {
         ResetMap();
@@ -131,7 +132,7 @@ public class MenuManager : MonoBehaviour
         InitPlay();
         this.StartCoroutine(GameManager.StartGame(InputManager.GetMap(), true));
     }
-    
+
     public void GoToPlayManual()
     {
         InitPlay();
@@ -173,4 +174,8 @@ public class MenuManager : MonoBehaviour
         PrefsManager.SetEdgesRendering(value);
     }
 
+    public void ShowWinner(Loyalties valueLoyalty)
+    {
+        Debug.Log("Winner is: " + valueLoyalty);
+    }
 }

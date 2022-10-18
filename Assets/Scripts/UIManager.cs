@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using DndCore.DI;
 using DndCore.Map;
 using Logic.Core.Battle;
 using Logic.Core.Graph;
@@ -249,6 +250,17 @@ public class UIManager : MonoBehaviour
         {
             InitiativeIndicator.transform.localPosition =
                 creatureInTurn.transform.localPosition + new Vector3(0f, 0.05f, 0f);
+        }
+
+        var battle = DndModule.Get<IDndBattle>();
+
+        foreach (var creature in battle.Map.Creatures)
+        {
+            if (creature.Value.HitPoints == 0)
+            {
+                creatures.FirstOrDefault(x => x != null && x.Creature != null && x.Creature.Id == creature.Value.Id)
+                    ?.gameObject.SetActive(false);
+            }
         }
     }
 
