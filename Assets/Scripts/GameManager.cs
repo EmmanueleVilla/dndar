@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     public TextMeshProUGUI Creatures;
 
     private bool _onlyAI;
+    private bool _completed;
 
     private void Update()
     {
@@ -60,11 +61,17 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if (_completed)
+        {
+            builder.AppendLine("Winner team: " + battle.GetCreatureInTurn().Loyalty);
+        }
+
         Creatures.text = builder.ToString();
     }
 
     public IEnumerator StartGame(IMap map, bool onlyAI)
     {
+        _completed = false;
         _onlyAI = onlyAI;
         Log = GameObject.FindGameObjectsWithTag("Log")[0].GetComponent<TextMeshProUGUI>();
         //Log.text += "\nSTART GAME";
@@ -101,7 +108,7 @@ public class GameManager : MonoBehaviour
         ActionsManager.SetActions(new List<IAvailableAction>());
         if (Battle.Map.Creatures.All(x => x.Value.Loyalty == Battle.Map.Creatures.First().Value.Loyalty))
         {
-            MenuManager.ShowWinner(Battle.Map.Creatures.First().Value.Loyalty);
+            _completed = true;
         }
         else
         {

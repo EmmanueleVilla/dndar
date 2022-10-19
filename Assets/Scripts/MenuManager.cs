@@ -4,6 +4,7 @@ using System.Linq;
 using Logic.Core.Creatures;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static InputManager;
 using static TileManager;
 
@@ -148,6 +149,11 @@ public class MenuManager : MonoBehaviour
         Settings.SetActive(false);
         Create.SetActive(false);
         ReferencePlane.SetActive(false);
+    }
+
+    public void ResetScene()
+    {
+        SceneManager.LoadScene("SampleScene");
     }
 
     public void GoToCreate()

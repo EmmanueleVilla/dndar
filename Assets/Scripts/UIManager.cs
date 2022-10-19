@@ -254,6 +254,14 @@ public class UIManager : MonoBehaviour
 
         var battle = DndModule.Get<IDndBattle>();
 
+        foreach (var creature in creatures)
+        {
+            if (!battle.Map.Creatures.ContainsKey(creature.Creature.Id))
+            {
+                creature.gameObject.SetActive(false);
+            }
+        }
+
         foreach (var creature in battle.Map.Creatures)
         {
             if (creature.Value.HitPoints == 0)
